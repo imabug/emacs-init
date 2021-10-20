@@ -17,9 +17,12 @@
 (add-to-list 'initial-frame-alist '(fullscreen . maximized))
 
 ;; Some general settings
+;; Don't show the startup screen.
 (setq inhibit-startup-screen t)
+;; Don't show the tool bar or menu bar.
 (tool-bar-mode -1)
 (menu-bar-mode -1)
+;; Show the time in the modeline
 (display-time-mode 1)
 (column-number-mode 1)
 (setq initial-major-mode 'text-mode)
@@ -92,6 +95,7 @@
 (package-initialize)
 (unless package-archive-contents
   (package-refresh-contents))
+;; Install use-package if it's not installed already
 (unless (package-installed-p 'use-package)
   (package-install 'use-package))
 (require 'use-package)
@@ -126,6 +130,7 @@
   (global-company-mode 1))
 (add-hook 'after-init-hook 'global-company-mode)
 
+;; Org mode
 (require 'org)
 (add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
 (add-hook 'org-mode-hook #'turn-on-font-lock)
