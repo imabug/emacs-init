@@ -71,19 +71,6 @@
 (global-set-key [mouse-9] 'scroll-down-command)
 (global-set-key [mouse-10] 'list-buffers)
 
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(default ((t (:family "Hack" :foundry "SRC" :slant normal :weight normal :height 115 :width normal)))))
-
 ;; Set a theme
 (load-theme 'tron-legacy t)
 
@@ -345,28 +332,10 @@
    "\\.erb\\'" "\\.mustache\\'" "\\.djhtml\\'" "\\.[t]?html?\\'"))
 
 ;; LaTeX
-(use-package tex
-  :ensure auctex
-  :defer t
-  :custom
-  (TeX-auto-save t)
-  (TeX-parse-self t)
-  (TeX-master nil)
-  ;; to use pdfview with auctex
-  (TeX-view-program-selection '((output-pdf "pdf-tools"))
-                               TeX-source-correlate-start-server t)
-  (TeX-view-program-list '(("pdf-tools" "TeX-pdf-tools-sync-view")))
-  (TeX-after-compilation-finished-functions #'TeX-revert-document-buffer)
-  :hook
-  (LaTeX-mode . (lambda ()
-                  (turn-on-reftex)
-                  (setq reftex-plug-into-AUCTeX t)
-                  (reftex-isearch-minor-mode)
-                  (setq TeX-PDF-mode t)
-                  (setq TeX-source-correlate-method 'synctex)
-                  (setq TeX-source-correlate-start-server t)))
-  :config
-  (add-hook LaTeX-mode-hook 'display-line-numbers-mode))
+(setq TeX-auto-save t)
+(setq TeX-parse-self t)
+(setq-default TeX-master nil)
+
 
 (provide 'init)
 ;;; init.el ends here
