@@ -35,6 +35,27 @@
 (when (display-graphic-p)
   (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING)))
 
+;; Display line numbers
+(global-display-line-numbers-mode t)
+;; Disable line numbers for some modes
+(dolist (mode '(org-mode-hook
+                term-mode-hook
+                shell-mode-hook
+                treemacs-mode-hook
+                eshell-mode-hook))
+  (add-hook mode (lambda () (display-line-numbers-mode 0))))
+
+;; Set up some fonts
+(defvar em/default-font-size 140)
+(defvar em/default-variable-font-size 140)
+
+;; Default font
+(set-face-attribute 'default nil :font "Hack" :height em/default-font-size)
+;; Set the fixed pitch face
+(set-face-attribute 'fixed-pitch nil :font "Hack" :height em/default-font-size)
+;; Variable pitch face
+(set-face-attribute 'variable-pitch nil :font "Cantarell" :height em/default-variable-font-size :weight 'regular)
+
 ;; Backup settings
 (setq backup-directory-alist '(("." . "~/.config/emacs/backups")))
 (setq delete-old-versions -1)
@@ -76,16 +97,16 @@
 
 ;; Package management setup
 (require 'package)
-(setq package-enable-at-startup nil)
-(setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
-                         ("melpa" . "http://melpa.org/packages/")
-                         ("nongnu" . "https://elpa.nongnu.org/")))
 (package-initialize)
 (unless package-archive-contents
   (package-refresh-contents))
+
 ;; Install use-package if it's not installed already
 (unless (package-installed-p 'use-package)
   (package-install 'use-package))
+(setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
+                         ("melpa" . "http://melpa.org/packages/")
+                         ("nongnu" . "https://elpa.nongnu.org/")))
 (require 'use-package)
 (setq use-package-verbose t)
 (setq use-package-always-ensure t)
@@ -114,9 +135,10 @@
   (company-global-modes '(not shell-mode eaf-mode))
   (company-idle-delay 0.2)
   (company-minimum-prefix-length 3)
+  (company-selection-wrap-around t)
+  (company-text-face-extra-attributes '(:weight bold))
   :config
   (global-company-mode 1))
-(add-hook 'after-init-hook 'global-company-mode)
 
 ;; Org mode
 (require 'org)
@@ -143,8 +165,6 @@
 (global-set-key (kbd "C-c a") #'org-agenda)
 (global-set-key (kbd "C-c c") #'org-capture)
 
-(require 'org-tempo)
-
 ;; Org tags
 (setq org-tag-alist '(("WORK" . ?W)
                       ("home" . ?h)
@@ -169,8 +189,14 @@
                               ("l" "Lab book"
                                entry (file+olp+datetree "~/org/PhD/notes.org")
                                "* %U\n %?\n %i\n %a")))
+
 (with-eval-after-load 'org
-  (org-defkey org-mode-map [(meta return)] 'org-meta-return))
+  (require 'org-tempo)
+  (org-defkey org-mode-map [(meta return)] 'org-meta-return)
+  (add-to-list 'org-structure-template-alist '("sh" . "src shell"))
+  (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
+  (add-to-list 'org-structure-template-alist '("php" . "src php")))
+
 (with-eval-after-load 'org-agenda
   (require 'org-projectile)
   (mapcar #'(lambda (file)
@@ -181,160 +207,173 @@
 ;; Magit
 (use-package magit)
 
-;; Projectile
+;; ;; Projectile
 (use-package projectile
+  :diminish projectile-mode
   :config
   (projectile-mode t))
 
-;; Treemacs
-(use-package treemacs
-  :init
-  (with-eval-after-load 'winum
-    (define-key winum-keymap (kbd "M-0") #'treemacs-select-window))
-  :custom
-  (treemacs-collapse-dirs 3)
-  (treemacs-deferred-git-apply-delay 0.5)
-  (treemacs-display-in-side-window t)
-  (treemacs-file-event-delay 5000)
-  (treemacs-file-follow-delay 0.2)
-  (treemacs-follow-after-init t)
-  (treemacs-follow-recenter-distance 0.1)
-  (treemacs-git-command-pipe "")
-  (treemacs-goto-tag-strategy 'refetch-index)
-  (treemacs-indentation 2)
-  (treemacs-indentation-string " ")
-  (treemacs-is-never-other-window nil)
-  (treemacs-max-git-entries 5000)
-  (treemacs-no-png-images nil)
-  (treemacs-no-delete-other-windows t)
-  (treemacs-project-follow-cleanup nil)
-  (treemacs-persist-file (expand-file-name ".cache/treemacs-persist" user-emacs-directory))
-  (treemacs-recenter-after-file-follow nil)
-  (treemacs-recenter-after-tag-follow nil)
-  (treemacs-show-cursor nil)
-  (treemacs-show-hidden-files t)
-  (treemacs-silent-filewatch nil)
-  (treemacs-silent-refresh nil)
-  (treemacs-sorting 'alphabetic-desc)
-  (treemacs-space-between-root-nodes t)
-  (treemacs-tag-follow-cleanup t)
-  (treemacs-tag-follow-delay 1.5)
-  (treemacs-width 35)
-  :config
-  ;; The default width and height of the icons is 22 pixels. If you are
-  ;; using a Hi-DPI display, uncomment this to double the icon size.
-  ;;(treemacs-resize-icons 44)
-  (treemacs-follow-mode t)
-  (treemacs-filewatch-mode t)
-  (treemacs-fringe-indicator-mode t)
-  :bind
-  (("M-0"       . treemacs-select-window)
-   ("C-x t 1"   . treemacs-delete-other-windows)
-   ("C-x t t"   . treemacs)
-   ("C-x t B"   . treemacs-bookmark)
-   ("C-x t C-t" . treemacs-find-file)
-   ("C-x t M-t" . treemacs-find-tag))
-  (:map treemacs-mode-map ("C-p" . treemacs-previous-line)))
-(use-package treemacs-magit
-  :defer t
-  :after (treemacs magit))
-(use-package treemacs-projectile
-  :defer t
-  :after (treemacs projectile))
+;; ;; Treemacs
+;; (use-package treemacs
+;;   :init
+;;   (with-eval-after-load 'winum
+;;     (define-key winum-keymap (kbd "M-0") #'treemacs-select-window))
+;;   :custom
+;;   (treemacs-collapse-dirs 3)
+;;   (treemacs-deferred-git-apply-delay 0.5)
+;;   (treemacs-display-in-side-window t)
+;;   (treemacs-file-event-delay 5000)
+;;   (treemacs-file-follow-delay 0.2)
+;;   (treemacs-follow-after-init t)
+;;   (treemacs-follow-recenter-distance 0.1)
+;;   (treemacs-git-command-pipe "")
+;;   (treemacs-goto-tag-strategy 'refetch-index)
+;;   (treemacs-indentation 2)
+;;   (treemacs-indentation-string " ")
+;;   (treemacs-is-never-other-window nil)
+;;   (treemacs-max-git-entries 5000)
+;;   (treemacs-no-png-images nil)
+;;   (treemacs-no-delete-other-windows t)
+;;   (treemacs-project-follow-cleanup nil)
+;;   (treemacs-persist-file (expand-file-name ".cache/treemacs-persist" user-emacs-directory))
+;;   (treemacs-recenter-after-file-follow nil)
+;;   (treemacs-recenter-after-tag-follow nil)
+;;   (treemacs-show-cursor nil)
+;;   (treemacs-show-hidden-files t)
+;;   (treemacs-silent-filewatch nil)
+;;   (treemacs-silent-refresh nil)
+;;   (treemacs-sorting 'alphabetic-desc)
+;;   (treemacs-space-between-root-nodes t)
+;;   (treemacs-tag-follow-cleanup t)
+;;   (treemacs-tag-follow-delay 1.5)
+;;   (treemacs-width 35)
+;;   :config
+;;   ;; The default width and height of the icons is 22 pixels. If you are
+;;   ;; using a Hi-DPI display, uncomment this to double the icon size.
+;;   ;;(treemacs-resize-icons 44)
+;;   (treemacs-follow-mode t)
+;;   (treemacs-filewatch-mode t)
+;;   (treemacs-fringe-indicator-mode t)
+;;   :bind
+;;   (("M-0"       . treemacs-select-window)
+;;    ("C-x t 1"   . treemacs-delete-other-windows)
+;;    ("C-x t t"   . treemacs)
+;;    ("C-x t B"   . treemacs-bookmark)
+;;    ("C-x t C-t" . treemacs-find-file)
+;;    ("C-x t M-t" . treemacs-find-tag))
+;;   (:map treemacs-mode-map ("C-p" . treemacs-previous-line)))
+;; (use-package treemacs-magit
+;;   :defer t
+;;   :after (treemacs magit))
+;; (use-package treemacs-projectile
+;;   :defer t
+;;   :after (treemacs projectile))
 
-;; Smartparens
-(use-package smartparens
-  :hook (prog-mode .smartparens-mode)
-  :diminish smartparens-mode)
-(show-paren-mode t)
+;; ;; Smartparens
+;; (use-package smartparens
+;;   :hook (prog-mode .smartparens-mode)
+;;   :diminish smartparens-mode)
+;; (show-paren-mode t)
 
-;; Flycheck
-(require 'flycheck)
+;; ;; Flycheck
+;; (require 'flycheck)
 (add-hook 'after-init-hook #'global-flycheck-mode)
 
-;; LSP Language Server Protocol
-(use-package lsp-mode
-  :bind
-  (:map lsp-mode-map ("C-c C-f" . lsp-format-buffer))
-  :config
-  (setq lsp-headerline-breadcrumb-enable t
-        lsp-prefer-flymake nil
-        lsp-keymap-prefix "C-x l"
-        gc-cons-threshold (* 100 1024 1024)
-        read-process-output-max (* 1024 1024)
-        company-idle-delay 0.0
-        company-minimum-prefix-length 1
-        ;; lock files will kill `npm start'
-        create-lockfiles nil)
-  :hook
-  ((java-mode python-mode go-mode rust-mode
-              js-mode js2-mode typescript-mode web-mode
-              c-mode c++-mode objc-mode) . lsp-deferred))
-(use-package lsp-ui
-  :after lsp-mode
-  :diminish
-  :commands lsp-ui-mode
-  :custom-face
-    (lsp-ui-doc-background ((t (:background nil))))
-    (lsp-ui-doc-header ((t (:inherit (font-lock-string-face italic)))))
-    :bind
-    (:map lsp-ui-mode-map
-          ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)
-          ([remap xref-find-references] . lsp-ui-peek-find-references)
-          ("C-c u" . lsp-ui-imenu)
-          ("M-i" . lsp-ui-doc-focus-frame))
-    (:map lsp-mode-map
-          ("M-n" . forward-paragraph)
-          ("M-p" . backward-paragraph))
-    :custom
-    (lsp-ui-doc-header t)
-    (lsp-ui-doc-include-signature t)
-    (lsp-ui-doc-border (face-foreground 'default))
-    (lsp-ui-sideline-enable nil)
-    (lsp-ui-sideline-ignore-duplicate t)
-    (lsp-ui-sideline-show-code-actions nil)
-    :config
-    ;; Use lsp-ui-doc-webkit only in GUI
-    (when (display-graphic-p)
-      (setq lsp-ui-doc-use-webkit t))
-    ;; WORKAROUND Hide mode-line of the lsp-ui-imenu buffer
-    ;; https://github.com/emacs-lsp/lsp-ui/issues/243
-    (defadvice lsp-ui-imenu (after hide-lsp-ui-imenu-mode-line activate)
-      (setq mode-line-format nil))
-    ;; `C-g'to close doc
-    (advice-add #'keyboard-quit :before #'lsp-ui-doc-hide))
-;; (use-package dap-mode
-;;   :diminish
+;; ;; LSP Language Server Protocol
+;; (use-package lsp-mode
 ;;   :bind
-;;   (:map dap-mode-map
-;;         (("<f12>" . dap-debug)
-;;          ("<f8>" . dap-continue)
-;;          ("<f9>" . dap-next)
-;;          ("<M-f11>" . dap-step-in)
-;;          ("C-M-<f11>" . dap-step-out)
-;;          ("<f7>" . dap-breakpoint-toggle))))
+;;   (:map lsp-mode-map ("C-c C-f" . lsp-format-buffer))
+;;   :config
+;;   (setq lsp-headerline-breadcrumb-enable t
+;;         lsp-prefer-flymake nil
+;;         lsp-keymap-prefix "C-x l"
+;;         gc-cons-threshold (* 100 1024 1024)
+;;         read-process-output-max (* 1024 1024)
+;;         company-idle-delay 0.0
+;;         company-minimum-prefix-length 1
+;;         ;; lock files will kill `npm start'
+;;         create-lockfiles nil)
+;;   :hook
+;;   ((java-mode python-mode go-mode rust-mode
+;;               js-mode js2-mode typescript-mode web-mode
+;;               c-mode c++-mode objc-mode) . lsp-deferred))
+;; (use-package lsp-ui
+;;   :after lsp-mode
+;;   :diminish
+;;   :commands lsp-ui-mode
+;;   :custom-face
+;;     (lsp-ui-doc-background ((t (:background nil))))
+;;     (lsp-ui-doc-header ((t (:inherit (font-lock-string-face italic)))))
+;;     :bind
+;;     (:map lsp-ui-mode-map
+;;           ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)
+;;           ([remap xref-find-references] . lsp-ui-peek-find-references)
+;;           ("C-c u" . lsp-ui-imenu)
+;;           ("M-i" . lsp-ui-doc-focus-frame))
+;;     (:map lsp-mode-map
+;;           ("M-n" . forward-paragraph)
+;;           ("M-p" . backward-paragraph))
+;;     :custom
+;;     (lsp-ui-doc-header t)
+;;     (lsp-ui-doc-include-signature t)
+;;     (lsp-ui-doc-border (face-foreground 'default))
+;;     (lsp-ui-sideline-enable nil)
+;;     (lsp-ui-sideline-ignore-duplicate t)
+;;     (lsp-ui-sideline-show-code-actions nil)
+;;     :config
+;;     ;; Use lsp-ui-doc-webkit only in GUI
+;;     (when (display-graphic-p)
+;;       (setq lsp-ui-doc-use-webkit t))
+;;     ;; WORKAROUND Hide mode-line of the lsp-ui-imenu buffer
+;;     ;; https://github.com/emacs-lsp/lsp-ui/issues/243
+;;     (defadvice lsp-ui-imenu (after hide-lsp-ui-imenu-mode-line activate)
+;;       (setq mode-line-format nil))
+;;     ;; `C-g'to close doc
+;;     (advice-add #'keyboard-quit :before #'lsp-ui-doc-hide))
+;; ;; (use-package dap-mode
+;; ;;   :diminish
+;; ;;   :bind
+;; ;;   (:map dap-mode-map
+;; ;;         (("<f12>" . dap-debug)
+;; ;;          ("<f8>" . dap-continue)
+;; ;;          ("<f9>" . dap-next)
+;; ;;          ("<M-f11>" . dap-step-in)
+;; ;;          ("C-M-<f11>" . dap-step-out)
+;; ;;          ("<f7>" . dap-breakpoint-toggle))))
 
-;; Languages
-;; PHP
-(use-package php-mode :ensure t)
-(add-hook 'php-mode-hook 'php-enable-psr2-coding-style)
-(with-eval-after-load 'php-mode
-  (define-key php-mode-map (kbd "C-c C--") 'php-current-class)
-  (define-key php-mode-map (kbd "C-c C-=") 'php-current-namespace))
+;; ;; Languages
+;; ;; PHP
+;; (use-package php-mode :ensure t)
+;; (use-package ac-php)
+;; (add-hook 'php-mode-hook 'php-enable-psr2-coding-style)
+;; (add-hook 'php-mode-hook
+;;           '(lambda ()
+;;              (company-mode t)
+;;              (require 'company-php)
+;;              (set (make-local-variable 'company-backends)
+;;                   '((company-ac-php-backend company-dabbrev-code)
+;;                     company-capf company-files))
+;;              (define-key php-mode-map (kbd "M-]")
+;;                'ac-php-find-symbol-at-point)
+;;              (define-key php-mode-map (kbd "M-[")
+;;                'ac-php-location-stack-back)))
+;; (with-eval-after-load 'php-mode
+;;   (define-key php-mode-map (kbd "C-c C--") 'php-current-class)
+;;   (define-key php-mode-map (kbd "C-c C-=") 'php-current-namespace))
 
-;; Web-mode
-(use-package web-mode
-  :custom-face
-  (css-selector ((t (:inherit default :foreground "#66CCFF"))))
-  (font-lock-comment-face ((t (:foreground "#828282"))))
-  :mode
-  ("\\.phtml\\'" "\\.tpl\\'" ".php\\'" "\\.[agj]sp\\'" "\\.as[cp]x\\'"
-   "\\.erb\\'" "\\.mustache\\'" "\\.djhtml\\'" "\\.[t]?html?\\'"))
+;; ;; Web-mode
+;; (use-package web-mode
+;;   :custom-face
+;;   (css-selector ((t (:inherit default :foreground "#66CCFF"))))
+;;   (font-lock-comment-face ((t (:foreground "#828282"))))
+;;   :mode
+;;   ("\\.phtml\\'" "\\.tpl\\'" ".php\\'" "\\.[agj]sp\\'" "\\.as[cp]x\\'"
+;;    "\\.erb\\'" "\\.mustache\\'" "\\.djhtml\\'" "\\.[t]?html?\\'"))
 
-;; LaTeX
-(setq TeX-auto-save t)
-(setq TeX-parse-self t)
-(setq-default TeX-master nil)
+;; ;; LaTeX
+;; (setq TeX-auto-save t)
+;; (setq TeX-parse-self t)
+;; (setq-default TeX-master nil)
 
 
 (provide 'init)
