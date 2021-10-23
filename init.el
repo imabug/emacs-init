@@ -25,6 +25,7 @@
 ;; Show the time in the modeline
 (display-time-mode 1)
 (column-number-mode 1)
+(show-paren-mode 1)
 (setq initial-major-mode 'text-mode)
 (add-hook 'text-mode-hook 'turn-on-visual-line-mode)
 (setq-default tab-always-indent t
@@ -34,6 +35,7 @@
 (prefer-coding-system 'utf-8)
 (when (display-graphic-p)
   (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING)))
+(setq require-final-newline t)
 
 ;; Display line numbers
 (global-display-line-numbers-mode t)
@@ -112,7 +114,9 @@
 (setq use-package-always-ensure t)
 (setq load-prefer-newer t)
 (use-package auto-compile
-  :config (auto-compile-on-load-mode))
+  :config
+  (auto-compile-on-load-mode)
+  (auto-compile-on-save-mode))
 (use-package auto-package-update
   :if (not (daemonp))
   :custom
@@ -205,79 +209,133 @@
           (org-projectile-todo-files)))
 
 ;; Magit
-(use-package magit)
+(use-package magit
+  :bind
+  (("C-x g" . magit-status))
+  :config
+  (magit-auto-revert-mode))
 
 ;; ;; Projectile
 (use-package projectile
+  :ensure t
   :diminish projectile-mode
+  :init
+  (projectile-mode t)
   :config
-  (projectile-mode t))
+  (setq projectile-project-search-path '("~/workspace"))
+  (setq projectile-find-dir-includes-top-level t)
+  :bind
+  (:map projectile-mode-map
+        ("C-c p" . projectile-command-map)))
+(use-package org-projectile
+  :ensure t
+  :bind (("C-c n p" . org-projectile-project-todo-completing-read))
+  :config
+  (progn
+    (setq org-projectile-projects-file "~/org/todo.org")))
 
-;; ;; Treemacs
-;; (use-package treemacs
-;;   :init
-;;   (with-eval-after-load 'winum
-;;     (define-key winum-keymap (kbd "M-0") #'treemacs-select-window))
-;;   :custom
-;;   (treemacs-collapse-dirs 3)
-;;   (treemacs-deferred-git-apply-delay 0.5)
-;;   (treemacs-display-in-side-window t)
-;;   (treemacs-file-event-delay 5000)
-;;   (treemacs-file-follow-delay 0.2)
-;;   (treemacs-follow-after-init t)
-;;   (treemacs-follow-recenter-distance 0.1)
-;;   (treemacs-git-command-pipe "")
-;;   (treemacs-goto-tag-strategy 'refetch-index)
-;;   (treemacs-indentation 2)
-;;   (treemacs-indentation-string " ")
-;;   (treemacs-is-never-other-window nil)
-;;   (treemacs-max-git-entries 5000)
-;;   (treemacs-no-png-images nil)
-;;   (treemacs-no-delete-other-windows t)
-;;   (treemacs-project-follow-cleanup nil)
-;;   (treemacs-persist-file (expand-file-name ".cache/treemacs-persist" user-emacs-directory))
-;;   (treemacs-recenter-after-file-follow nil)
-;;   (treemacs-recenter-after-tag-follow nil)
-;;   (treemacs-show-cursor nil)
-;;   (treemacs-show-hidden-files t)
-;;   (treemacs-silent-filewatch nil)
-;;   (treemacs-silent-refresh nil)
-;;   (treemacs-sorting 'alphabetic-desc)
-;;   (treemacs-space-between-root-nodes t)
-;;   (treemacs-tag-follow-cleanup t)
-;;   (treemacs-tag-follow-delay 1.5)
-;;   (treemacs-width 35)
-;;   :config
-;;   ;; The default width and height of the icons is 22 pixels. If you are
-;;   ;; using a Hi-DPI display, uncomment this to double the icon size.
-;;   ;;(treemacs-resize-icons 44)
-;;   (treemacs-follow-mode t)
-;;   (treemacs-filewatch-mode t)
-;;   (treemacs-fringe-indicator-mode t)
-;;   :bind
-;;   (("M-0"       . treemacs-select-window)
-;;    ("C-x t 1"   . treemacs-delete-other-windows)
-;;    ("C-x t t"   . treemacs)
-;;    ("C-x t B"   . treemacs-bookmark)
-;;    ("C-x t C-t" . treemacs-find-file)
-;;    ("C-x t M-t" . treemacs-find-tag))
-;;   (:map treemacs-mode-map ("C-p" . treemacs-previous-line)))
-;; (use-package treemacs-magit
-;;   :defer t
-;;   :after (treemacs magit))
-;; (use-package treemacs-projectile
-;;   :defer t
-;;   :after (treemacs projectile))
+(use-package smartparens
+  :diminish smartparens-mode
+  :bind
+  (:map smartparens-mode-map
+        ("C-)" . sp-forward-slurp-sexp)
+        ("C-}" . sp-forward-barf-sexp)
+        ("C-(" . sp-backward-slurp-sexp)
+        ("C-{" . sp-backward-barf-sexp))
+  :config
+  (progn
+    ;; Stop pairing single quotes in elisp
+    (sp-local-pair 'emacs-lisp-mode "'" nil :actions nil)
+    (sp-local-pair 'org-mode "[" nil :actions nil)
+    (sp-local-pair 'org-mode "~" "~")))
+(smartparens-global-strict-mode 1)
 
-;; ;; Smartparens
-;; (use-package smartparens
-;;   :hook (prog-mode .smartparens-mode)
-;;   :diminish smartparens-mode)
-;; (show-paren-mode t)
-
-;; ;; Flycheck
-;; (require 'flycheck)
+;; Flycheck
+(require 'flycheck)
 (add-hook 'after-init-hook #'global-flycheck-mode)
+(diminish flycheck-mode)
+
+;; Winum
+(setq winum-keymap
+    (let ((map (make-sparse-keymap)))
+      (define-key map (kbd "C-`") 'winum-select-window-by-number)
+      (define-key map (kbd "M-0") 'winum-select-window-0-or-10)
+      (define-key map (kbd "M-1") 'winum-select-window-1)
+      (define-key map (kbd "M-2") 'winum-select-window-2)
+      (define-key map (kbd "M-3") 'winum-select-window-3)
+      (define-key map (kbd "M-4") 'winum-select-window-4)
+      (define-key map (kbd "M-5") 'winum-select-window-5)
+      (define-key map (kbd "M-6") 'winum-select-window-6)
+      (define-key map (kbd "M-7") 'winum-select-window-7)
+      (define-key map (kbd "M-8") 'winum-select-window-8)
+      map))
+(use-package winum)
+(winum-mode)
+
+;; Treemacs
+(use-package treemacs
+  :ensure t
+  :defer t
+  :init
+  (with-eval-after-load 'winum
+    (define-key winum-keymap (kbd "M-0") #'treemacs-select-window))
+  :custom
+  (treemacs-collapse-dirs 3)
+  (treemacs-deferred-git-apply-delay 0.5)
+  (treemacs-display-in-side-window t)
+  (treemacs-file-event-delay 5000)
+  (treemacs-file-follow-delay 0.2)
+  (treemacs-follow-after-init t)
+  (treemacs-follow-recenter-distance 0.1)
+  (treemacs-git-command-pipe "")
+  (treemacs-goto-tag-strategy 'refetch-index)
+  (treemacs-indentation 2)
+  (treemacs-indentation-string " ")
+  (treemacs-is-never-other-window nil)
+  (treemacs-max-git-entries 5000)
+  (treemacs-no-png-images nil)
+  (treemacs-no-delete-other-windows t)
+  (treemacs-project-follow-cleanup nil)
+  (treemacs-persist-file (expand-file-name ".cache/treemacs-persist" user-emacs-directory))
+  (treemacs-recenter-after-file-follow nil)
+  (treemacs-recenter-after-tag-follow nil)
+  (treemacs-show-cursor nil)
+  (treemacs-show-hidden-files t)
+  (treemacs-silent-filewatch nil)
+  (treemacs-silent-refresh nil)
+  (treemacs-sorting 'alphabetic-desc)
+  (treemacs-space-between-root-nodes t)
+  (treemacs-tag-follow-cleanup t)
+  (treemacs-tag-follow-delay 1.5)
+  (treemacs-width 35)
+  :config
+  ;; The default width and height of the icons is 22 pixels. If you are
+  ;; using a Hi-DPI display, uncomment this to double the icon size.
+  ;;(treemacs-resize-icons 44)
+  (treemacs-follow-mode t)
+  (treemacs-filewatch-mode t)
+  (treemacs-fringe-indicator-mode t)
+  (treemacs-git-mode 'deferred)
+  :bind
+  (("M-0"       . treemacs-select-window)
+   ("C-x t 1"   . treemacs-delete-other-windows)
+   ("C-x t t"   . treemacs)
+   ("C-x t B"   . treemacs-bookmark)
+   ("C-x t C-t" . treemacs-find-file)
+   ("C-x t M-t" . treemacs-find-tag))
+  (:map treemacs-mode-map ("C-p" . treemacs-previous-line)))
+(use-package treemacs-magit
+  :defer t
+  :ensure t
+  :after (treemacs magit))
+(use-package treemacs-projectile
+  :defer t
+  :ensure t
+  :after (treemacs projectile))
+(use-package treemacs-icons-dired
+  :hook (dired-mode . treemacs-icons-dired-enable-once)
+  :ensure t
+  :defer t)
 
 ;; ;; LSP Language Server Protocol
 ;; (use-package lsp-mode
@@ -371,10 +429,13 @@
 ;;    "\\.erb\\'" "\\.mustache\\'" "\\.djhtml\\'" "\\.[t]?html?\\'"))
 
 ;; ;; LaTeX
-;; (setq TeX-auto-save t)
-;; (setq TeX-parse-self t)
-;; (setq-default TeX-master nil)
-
+(setq TeX-auto-save t)
+(setq TeX-parse-self t)
+(setq-default TeX-master nil)
+(setq TeX-PDF-mode t)
+(use-package company-auctex
+  :after tex-alt-dvi-print-command:config
+  (company-auctex-init))
 
 (provide 'init)
 ;;; init.el ends here
