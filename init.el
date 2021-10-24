@@ -249,7 +249,9 @@
   (set-face-attribute 'org-done nil :weight 'bold :box nil :foreground "#BBF0EF")
   (set-face-attribute 'org-todo nil :weight 'bold :box nil :foreground "#FF7DBB")
   (set-face-attribute 'org-agenda-structure nil
-                      :weight 'bold :box nil :foreground "#BBF0EF" :background "#1B324B"))
+                      :weight 'bold :box nil :foreground "#BBF0EF" :background "#1B324B")
+  (set-face-attribute 'org-table-header nil
+                      :inherit 'org-table :weight 'bold :background "LightGray" :foreground "Black"))
 
 (with-eval-after-load 'org-agenda
   (require 'org-projectile)
