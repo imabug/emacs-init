@@ -24,11 +24,13 @@
 (menu-bar-mode -1)
 ;; Show the time in the modeline
 (display-time-mode 1)
+;; Show column numbers
 (column-number-mode 1)
 (show-paren-mode 1)
 (setq initial-major-mode 'text-mode)
 (add-hook 'text-mode-hook 'turn-on-visual-line-mode)
 (add-hook 'text-mode-hook 'auto-fill-mode)
+;; Set tab behaviour
 (setq-default tab-always-indent t
               indent-tabs-mode nil
               tab-width 4
@@ -51,7 +53,6 @@
 ;; Set up some fonts
 (defvar em/default-font-size 140)
 (defvar em/default-variable-font-size 140)
-
 ;; Default font
 (set-face-attribute 'default nil :font "Hack" :height em/default-font-size)
 ;; Set the fixed pitch face
@@ -89,6 +90,7 @@
 (put 'kill-ring                             'history-length 50)
 
 ;; Keybindings
+;; Extra mouse button/wheel bindings for my Logitech MX Master mouse
 (global-set-key [mouse-6] 'backward-word)
 (global-set-key [mouse-7] 'forward-word)
 (global-set-key [mouse-8] 'scroll-up-command)
@@ -161,7 +163,7 @@
         helm-actions-inherit-frame-settings       t
         helm-use-frame-when-more-than-two-windows t
         helm-use-frame-when-dedicated-window      t
-        helm-display-buffer-default-height        10
+        helm-display-buffer-default-height        10 ;; Make the helm buffer smaller
         helm-frame-background-color               "DarkSlateGray"
         helm-show-action-window-other-window      'left
         helm-allow-mouse                          t
@@ -186,6 +188,10 @@
 (helm-mode 1)
 
 ;; Org mode
+;; Use the version of org-mode that comes bundled with Fedora's emacs
+;; instead of grabbing it from ELPA.
+;; It will be a bit older, but then I don't need to worry about conflicts
+;; because of loading different versions
 (require 'org)
 (add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
 (add-hook 'org-mode-hook #'turn-on-font-lock)
@@ -256,7 +262,7 @@
   :config
   (magit-auto-revert-mode))
 
-;; ;; Projectile
+;; Projectile
 (use-package projectile
   :ensure t
   :diminish projectile-mode
@@ -300,9 +306,11 @@
     (sp-local-pair 'emacs-lisp-mode "'" nil :actions nil)
     (sp-local-pair 'org-mode "[" nil :actions nil)
     (sp-local-pair 'org-mode "~" "~")))
+;; Enable strict mode globally
 (smartparens-global-strict-mode 1)
 
 ;; Flycheck
+;; Use Fedora's emacs-flycheck package
 (require 'flycheck)
 (add-hook 'after-init-hook #'global-flycheck-mode)
 (diminish flycheck-mode)
