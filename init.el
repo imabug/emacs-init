@@ -6,7 +6,6 @@
 (add-to-list 'load-path "/usr/share/emacs/site-lisp/")
 (add-to-list 'custom-theme-load-path "~/.config/emacs/themes/")
 (setq custom-file "~/.config/emacs/custom-settings.el")
-(load custom-file t)
 
 ;; Set up user info
 (setq user-full-name "Eugene Mah"
@@ -51,8 +50,8 @@
   (add-hook mode (lambda () (display-line-numbers-mode 0))))
 
 ;; Set up some fonts
-(defvar em/default-font-size 140)
-(defvar em/default-variable-font-size 140)
+(defvar em/default-font-size 110)
+(defvar em/default-variable-font-size 110)
 ;; Default font
 (set-face-attribute 'default nil :font "Hack" :height em/default-font-size)
 ;; Set the fixed pitch face
@@ -246,7 +245,11 @@
   (org-defkey org-mode-map [(meta return)] 'org-meta-return)
   (add-to-list 'org-structure-template-alist '("sh" . "src shell"))
   (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
-  (add-to-list 'org-structure-template-alist '("php" . "src php")))
+  (add-to-list 'org-structure-template-alist '("php" . "src php"))
+  (set-face-attribute 'org-done nil :weight 'bold :box nil :foreground "#BBF0EF")
+  (set-face-attribute 'org-todo nil :weight 'bold :box nil :foreground "#FF7DBB")
+  (set-face-attribute 'org-agenda-structure nil
+                      :weight 'bold :box nil :foreground "#BBF0EF" :background "#1B324B"))
 
 (with-eval-after-load 'org-agenda
   (require 'org-projectile)
@@ -525,6 +528,8 @@
 (use-package company-auctex
   :after tex-alt-dvi-print-command:config
   (company-auctex-init))
+
+(add-hook 'after-init-hook (lambda () (load custom-file)))
 
 (provide 'init)
 ;;; init.el ends here
