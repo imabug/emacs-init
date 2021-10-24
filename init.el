@@ -1,7 +1,6 @@
 ;;; init.el --- -*- lexical-binding: t -*-
 
 ;; Some path settings
-;;(add-to-list 'load-path "/opt/share/emacs/site-lisp/org/")
 (add-to-list 'load-path "~/.config/emacs/elisp/")
 (add-to-list 'load-path "/usr/share/emacs/site-lisp/")
 (add-to-list 'custom-theme-load-path "~/.config/emacs/themes/")
@@ -28,14 +27,15 @@
 (show-paren-mode 1)
 (setq initial-major-mode 'text-mode)
 (add-hook 'text-mode-hook 'turn-on-visual-line-mode)
+(add-hook 'text-mode-hook 'auto-fill-mode)
 (setq-default tab-always-indent t
               indent-tabs-mode nil
-              tab-width 4)
+              tab-width 4
+              require-final-newline t)
 (fset 'yes-or-no-p 'y-or-n-p)
 (prefer-coding-system 'utf-8)
 (when (display-graphic-p)
   (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING)))
-(setq require-final-newline t)
 
 ;; Display line numbers
 (global-display-line-numbers-mode t)
@@ -96,6 +96,7 @@
 
 ;; Set a theme
 (load-theme 'tron-legacy t)
+(setq tron-legacy-theme-vivid-cursor t)
 
 ;; Package management setup
 (require 'package)
@@ -159,11 +160,13 @@
         helm-actions-inherit-frame-settings       t
         helm-use-frame-when-more-than-two-windows t
         helm-use-frame-when-dedicated-window      t
+        helm-display-buffer-default-height        10
         helm-frame-background-color               "DarkSlateGray"
         helm-show-action-window-other-window      'left
         helm-allow-mouse                          t
         helm-move-to-line-cycle-in-source         t
-        helm-autoresize-max-height                40 ; it is %.
+        helm-autoresize-mode                      t
+        helm-autoresize-max-height                0 ; it is %.
         helm-autoresize-min-height                10 ; it is %.
         helm-follow-mode-persistent               t
         helm-candidate-number-limit               500
@@ -259,8 +262,16 @@
   :init
   (projectile-mode t)
   :config
-  (setq projectile-project-search-path '("~/workspace"))
-  (setq projectile-find-dir-includes-top-level t)
+  (setq projectile-project-search-path '("~/workspace")
+        projectile-find-dir-includes-top-level t
+        projectile-enable-caching t
+        projectile-switch-project-action #'projectile-commander)
+  (projectile-register-project-type 'php '("composer.json")
+                                    :src-dir "app"
+				                    :test "composer test"
+				                    :run "composer serve"
+				                    :test-suffix "Test"
+				                    :test-dir "tests")
   :bind
   (:map projectile-mode-map
         ("C-c p" . projectile-command-map)))
@@ -312,6 +323,12 @@
 (use-package winum)
 (winum-mode)
 
+;; Which-key
+(use-package which-key
+  :ensure t
+  :config
+  (which-key-mode))
+
 ;; Treemacs
 (use-package treemacs
   :ensure t
@@ -333,16 +350,16 @@
   (treemacs-indentation-string " ")
   (treemacs-is-never-other-window nil)
   (treemacs-max-git-entries 5000)
-  (treemacs-no-png-images nil)
   (treemacs-no-delete-other-windows t)
-  (treemacs-project-follow-cleanup nil)
+  (treemacs-no-png-images nil)
   (treemacs-persist-file (expand-file-name ".cache/treemacs-persist" user-emacs-directory))
+  (treemacs-project-follow-cleanup t)
   (treemacs-recenter-after-file-follow nil)
   (treemacs-recenter-after-tag-follow nil)
   (treemacs-show-cursor nil)
   (treemacs-show-hidden-files t)
-  (treemacs-silent-filewatch nil)
-  (treemacs-silent-refresh nil)
+  (treemacs-silent-filewatch t)
+  (treemacs-silent-refresh t)
   (treemacs-sorting 'alphabetic-desc)
   (treemacs-space-between-root-nodes t)
   (treemacs-tag-follow-cleanup t)
@@ -441,32 +458,55 @@
 
 ;; Languages
 ;; PHP
-;;(use-package php-mode :ensure t)
-;;(use-package ac-php)
-;; (add-hook 'php-mode-hook 'php-enable-psr2-coding-style)
-;; (add-hook 'php-mode-hook
-;;           '(lambda ()
-;;              (company-mode t)
-;;              (require 'company-php)
-;;              (set (make-local-variable 'company-backends)
-;;                   '((company-ac-php-backend company-dabbrev-code)
-;;                     company-capf company-files))
-;;              (define-key php-mode-map (kbd "M-]")
-;;                'ac-php-find-symbol-at-point)
-;;              (define-key php-mode-map (kbd "M-[")
-;;                'ac-php-location-stack-back)))
-;; (with-eval-after-load 'php-mode
-;;   (define-key php-mode-map (kbd "C-c C--") 'php-current-class)
-;;   (define-key php-mode-map (kbd "C-c C-=") 'php-current-namespace))
+(use-package php-mode
+  :ensure t
+  :config
+  (setq php-mode-coding-style 'psr2))
+(use-package ac-php)
+(use-package company-php
+  :defer
+  :after company)
+(add-to-list 'auto-mode-alist '("\\.php\\'" . php-mode))
+(setq php-mode-coding-style 'psr2)
+(add-hook 'php-mode-hook 'php-enable-psr2-coding-style)
+(add-hook 'php-mode-hook
+          '(lambda ()
+             (company-mode t)
+             (require 'company-php)
+             (ac-php-core-eldoc-setup)
+             (set (make-local-variable 'company-backends)
+                  '((company-ac-php-backend company-dabbrev-code)
+                    company-capf company-files))
+             (define-key php-mode-map (kbd "M-]")
+               'ac-php-find-symbol-at-point)
+             (define-key php-mode-map (kbd "M-[")
+               'ac-php-location-stack-back)))
+(with-eval-after-load 'php-mode
+  (define-key php-mode-map (kbd "C-c C--") 'php-current-class)
+  (define-key php-mode-map (kbd "C-c C-=") 'php-current-namespace))
 
 ;; ;; Web-mode
-;; (use-package web-mode
-;;   :custom-face
-;;   (css-selector ((t (:inherit default :foreground "#66CCFF"))))
-;;   (font-lock-comment-face ((t (:foreground "#828282"))))
-;;   :mode
-;;   ("\\.phtml\\'" "\\.tpl\\'" ".php\\'" "\\.[agj]sp\\'" "\\.as[cp]x\\'"
-;;    "\\.erb\\'" "\\.mustache\\'" "\\.djhtml\\'" "\\.[t]?html?\\'"))
+(use-package web-mode
+  :custom-face
+  (css-selector ((t (:inherit default :foreground "#66CCFF"))))
+  (font-lock-comment-face ((t (:foreground "#828282"))))
+  :mode
+  ("\\.phtml\\'" "\\.tpl\\.php\\'" "\\.[agj]sp\\'" "\\.as[cp]x\\'"
+   "\\.erb\\'" "\\.mustache\\'" "\\.djhtml\\'" "\\.[t]?html?\\'"
+   "\\.html?\\'" "\\.blade\\.php\\'")
+  :config
+  (setq web-mode-engines-alist
+        '(("php" . "\\.phtml\\'")
+          ("blade" . "\\.blade\\."))
+        web-mode-enable-auto-pairing t
+        web-mode-enable-auto-closing t
+        web-mode-enable-auto-indentation t
+        web-mode-enable-auto-opening t
+        web-mode-enable-auto-quoting t
+        web-mode-enable-engine-detection t
+        web-mode-markup-indent-offset 2
+        web-mode-css-indent-offset 2
+        web-mode-code-indent-offset 2))
 
 ;; ;; LaTeX
 (setq TeX-auto-save t)
