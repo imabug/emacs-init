@@ -246,6 +246,7 @@
   (add-to-list 'org-structure-template-alist '("sh" . "src shell"))
   (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
   (add-to-list 'org-structure-template-alist '("php" . "src php"))
+  ;; Change the face attributes for some org items
   (set-face-attribute 'org-done nil :weight 'bold :box nil :foreground "#BBF0EF")
   (set-face-attribute 'org-todo nil :weight 'bold :box nil :foreground "#FF7DBB")
   (set-face-attribute 'org-agenda-structure nil
@@ -528,7 +529,7 @@
 (setq-default TeX-master nil)
 (setq TeX-PDF-mode t)
 (use-package company-auctex
-  :after tex-alt-dvi-print-command:config
+  :config
   (company-auctex-init))
 
 (add-hook 'after-init-hook (lambda () (load custom-file)))
