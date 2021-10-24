@@ -1,5 +1,6 @@
 ;;; init.el --- -*- lexical-binding: t -*-
 
+;;; Code:
 ;; Some path settings
 (add-to-list 'load-path "~/.config/emacs/elisp/")
 (add-to-list 'load-path "/usr/share/emacs/site-lisp/")
@@ -190,14 +191,14 @@
 (add-hook 'org-mode-hook #'turn-on-font-lock)
 (setq org-agenda-files (list "~/org/todo.org")
       org-directory "~/org/"
+      org-default-notes-file "~/org/notes.org"
       org-enable-github-support t
       org-enable-journal-support t
-      org-use-speed-commands t
-      org-projectile-file "~/org/todo.org"
-      org-default-notes-file "~/org/notes.org"
       org-journal-dir "~/org/journal/"
       org-log-done 'time-date
+      org-projectile-file "~/org/todo.org"
       org-startup-truncated nil
+      org-use-speed-commands t
       calendar-latitude 33.0752523
       calendar-longitude -80.0220569)
 (setq org-ref-bibliography-notes "~/org/bibtex/notes.org"
@@ -469,11 +470,11 @@
 (add-to-list 'auto-mode-alist '("\\.php\\'" . php-mode))
 (setq php-mode-coding-style 'psr2)
 (add-hook 'php-mode-hook 'php-enable-psr2-coding-style)
+(add-hook 'php-mode-hook #'php-align-setup)
 (add-hook 'php-mode-hook
           '(lambda ()
              (company-mode t)
              (require 'company-php)
-             (ac-php-core-eldoc-setup)
              (set (make-local-variable 'company-backends)
                   '((company-ac-php-backend company-dabbrev-code)
                     company-capf company-files))
