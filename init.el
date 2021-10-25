@@ -13,7 +13,7 @@
 (setenv "SHELL" "/opt/bin/fish")
 
 ;; Start up maximized
-(add-to-list 'initial-frame-alist '(fullscreen . maximized))
+(add-to-list 'default-frame-alist '(fullscreen . maximized))
 
 ;; Some general settings
 ;; Don't show the startup screen.
@@ -111,7 +111,7 @@
   (package-install 'use-package))
 (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
                          ("melpa" . "http://melpa.org/packages/")
-                         ("nongnu" . "https://elpa.nongnu.org/")))
+                         ("nongnu" . "https://elpa.nongnu.org/nongnu/")))
 (require 'use-package)
 (setq use-package-verbose t)
 (setq use-package-always-ensure t)
@@ -408,6 +408,12 @@
   :hook (dired-mode . treemacs-icons-dired-enable-once)
   :ensure t
   :defer t)
+
+;; Doom modeline
+(use-package all-the-icons)
+(use-package doom-modeline
+  :ensure t
+  :hook (after-init . doom-modeline-mode))
 
 ;; ;; LSP Language Server Protocol
 ;; (use-package lsp-mode
