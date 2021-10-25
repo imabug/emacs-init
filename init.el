@@ -22,6 +22,8 @@
 (tool-bar-mode -1)
 (menu-bar-mode -1)
 ;; Show the time in the modeline
+(setq display-time-day-and-date t
+      display-time-24hr-format t)
 (display-time-mode 1)
 ;; Show column numbers
 (column-number-mode 1)
