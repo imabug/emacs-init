@@ -413,7 +413,10 @@
 (use-package all-the-icons)
 (use-package doom-modeline
   :ensure t
-  :hook (after-init . doom-modeline-mode))
+  :hook (after-init . doom-modeline-mode)
+  :config
+  (setq doom-modeline-irc nil
+        doom-modeline-buffer-encoding nil))
 
 ;; ;; LSP Language Server Protocol
 ;; (use-package lsp-mode
