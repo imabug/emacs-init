@@ -534,7 +534,7 @@
         web-mode-css-indent-offset 2
         web-mode-code-indent-offset 2))
 
-;; ;; LaTeX
+;; LaTeX
 (setq TeX-auto-save t)
 (setq TeX-parse-self t)
 (setq-default TeX-master nil)
@@ -543,6 +543,7 @@
   :config
   (company-auctex-init))
 
+;; Load custom settings from custom-file (custom-settings.el)
 (add-hook 'after-init-hook (lambda () (load custom-file)))
 
 (provide 'init)
