@@ -14,6 +14,9 @@
 # Ignore the elpa package directory
 elpa/
 
+# Ignore some emacs created files and folders
 abbrev_defs
 projectile-bookmarks.eld
 savehist
+recentf
+transient/
