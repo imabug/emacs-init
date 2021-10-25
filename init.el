@@ -97,8 +97,13 @@
 (global-set-key [mouse-8] 'scroll-up-command)
 (global-set-key [mouse-9] 'scroll-down-command)
 (global-set-key [mouse-10] 'list-buffers)
-;; Bind delete-frame to C-c C-f d
+;; Set some frame related keybindings
 (global-set-key (kbd "C-c C-f d") 'delete-frame)
+(global-set-key (kbd "C-c C-f n") 'make-frame)
+(global-set-key (kbd "C-c C-f o") 'other-frame)
+(global-set-key (kbd "C-c C-f s") 'select-frame)
+(global-set-key (kbd "C-c C-f l") 'lower-frame)
+(global-set-key (kbd "C-c C-f r") 'raise-frame)
 
 ;; Set a theme
 (load-theme 'tron-legacy t)
@@ -165,7 +170,7 @@
                                                     helm-imenu-in-all-buffers)
         helm-actions-inherit-frame-settings       t
         helm-use-frame-when-more-than-two-windows t
-        helm-use-frame-when-dedicated-window      t
+        helm-use-frame-when-no-suitable-window    t
         helm-display-buffer-default-height        10 ;; Make the helm buffer smaller
         helm-frame-background-color               "DarkSlateGray"
         helm-show-action-window-other-window      'left
