@@ -275,6 +275,7 @@
   :bind
   (("C-x g" . magit-status))
   :config
+  (setq magit-credential-cache-daemon-socket nil)
   (magit-auto-revert-mode))
 
 ;; Projectile
