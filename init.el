@@ -120,6 +120,7 @@
 
 ;; Install use-package if it's not installed already
 (unless (package-installed-p 'use-package)
+  (package-refresh-contents)
   (package-install 'use-package))
 (require 'use-package)
 (setq use-package-verbose t)
@@ -273,7 +274,14 @@
 ;; Magit
 (use-package magit
   :bind
-  (("C-x g" . magit-status))
+  (("C-c C-g s" . magit-status)
+   ("C-c C-g d" . magit-diff)
+   ("C-c C-g S" . magit-stage)
+   ("C-c C-g u" . magit-unstage)
+   ("C-c C-g c" . magit-commit)
+   ("C-c C-g p" . magit-push)
+   ("C-c C-g P" . magit-pull)
+   ("C-c C-g f" . magit-fetch))
   :config
   (setq magit-credential-cache-daemon-socket nil)
   (magit-auto-revert-mode))
