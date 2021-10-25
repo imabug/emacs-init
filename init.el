@@ -97,8 +97,8 @@
 (global-set-key [mouse-8] 'scroll-up-command)
 (global-set-key [mouse-9] 'scroll-down-command)
 (global-set-key [mouse-10] 'list-buffers)
-;; Bind delete-frame to C-c d
-(global-set-key (kbd "C-c d") 'delete-frame)
+;; Bind delete-frame to C-c C-f d
+(global-set-key (kbd "C-c C-f d") 'delete-frame)
 
 ;; Set a theme
 (load-theme 'tron-legacy t)
@@ -106,6 +106,9 @@
 
 ;; Package management setup
 (require 'package)
+(setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
+                         ("melpa" . "http://melpa.org/packages/")
+                         ("nongnu" . "https://elpa.nongnu.org/nongnu/")))
 (package-initialize)
 (unless package-archive-contents
   (package-refresh-contents))
@@ -113,9 +116,9 @@
 ;; Install use-package if it's not installed already
 (unless (package-installed-p 'use-package)
   (package-install 'use-package))
-(setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
-                         ("melpa" . "http://melpa.org/packages/")
-                         ("nongnu" . "https://elpa.nongnu.org/nongnu/")))
+(with-eval-after-load 'info
+  (info-initialize)
+  (add-to-list 'Info-directory-list "~/.config/emacs/elisp/use-package/"))
 (require 'use-package)
 (setq use-package-verbose t)
 (setq use-package-always-ensure t)
