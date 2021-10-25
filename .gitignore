@@ -3,9 +3,17 @@
 
 # Packaging
 .cask
+.last-package-update-day
 
 # Backup files
 *~
 
 # Undo-tree save-files
 *.~undo-tree
+
+# Ignore the elpa package directory
+elpa/
+
+abbrev_defs
+projectile-bookmarks.eld
+savehist
