@@ -97,6 +97,8 @@
 (global-set-key [mouse-8] 'scroll-up-command)
 (global-set-key [mouse-9] 'scroll-down-command)
 (global-set-key [mouse-10] 'list-buffers)
+;; Bind delete-frame to C-c d
+(global-set-key (kbd "C-c d") 'delete-frame)
 
 ;; Set a theme
 (load-theme 'tron-legacy t)
