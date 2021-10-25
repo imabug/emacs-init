@@ -85,8 +85,6 @@
 (put 'org-read-date-history                 'history-length 50)
 (put 'org-table-formula-history             'history-length 50)
 (put 'helm-M-x-input-history                'history-length 50)
-(put 'ido-buffer-history                    'history-length 50)
-(put 'ido-file-history                      'history-length 50)
 (put 'minibuffer-history                    'history-length 50)
 (put 'kill-ring                             'history-length 50)
 
