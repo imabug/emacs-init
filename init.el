@@ -5,7 +5,7 @@
 (add-to-list 'load-path "~/.config/emacs/elisp/")
 (add-to-list 'load-path "/usr/share/emacs/site-lisp/")
 (add-to-list 'custom-theme-load-path "~/.config/emacs/themes/")
-(setq custom-file "~/.config/emacs/custom-settings.el")
+;; (setq custom-file "~/.config/emacs/custom-settings.el")
 
 ;; Set up user info
 (setq user-full-name "Eugene Mah"
@@ -116,9 +116,6 @@
 ;; Install use-package if it's not installed already
 (unless (package-installed-p 'use-package)
   (package-install 'use-package))
-(with-eval-after-load 'info
-  (info-initialize)
-  (add-to-list 'Info-directory-list "~/.config/emacs/elisp/use-package/"))
 (require 'use-package)
 (setq use-package-verbose t)
 (setq use-package-always-ensure t)
@@ -549,7 +546,7 @@
   (company-auctex-init))
 
 ;; Load custom settings from custom-file (custom-settings.el)
-(add-hook 'after-init-hook (lambda () (load custom-file)))
+;; (add-hook 'after-init-hook (lambda () (load custom-file)))
 
 (provide 'init)
 ;;; init.el ends here
