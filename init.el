@@ -391,7 +391,7 @@
   (treemacs-show-hidden-files t)
   (treemacs-silent-filewatch t)
   (treemacs-silent-refresh t)
-  (treemacs-sorting 'alphabetic-desc)
+  (treemacs-sorting 'alphabetic-asc)
   (treemacs-space-between-root-nodes t)
   (treemacs-tag-follow-cleanup t)
   (treemacs-tag-follow-delay 1.5)
