@@ -102,6 +102,8 @@
 (global-set-key (kbd "C-c C-f s") 'select-frame)
 (global-set-key (kbd "C-c C-f l") 'lower-frame)
 (global-set-key (kbd "C-c C-f r") 'raise-frame)
+;; Other keybindings
+(global-set-key (kbd "C-c ;") 'comment-or-uncomment-region)
 
 ;; Set a theme
 (load-theme 'tron-legacy t)
