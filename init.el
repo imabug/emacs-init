@@ -157,6 +157,14 @@
 
 ;; Helm
 (use-package helm
+  :demand t
+  :bind
+  (("M-x" . helm-M-x)
+   ("C-x C-f" . helm-find-files)
+   ("C-h i" . helm-info)
+   ("C-h a" . helm-apropos)
+   ("M-y" . helm-show-kill-ring)
+   ("C-x b" . helm-mini))
   :config
   (require 'helm-config)
   (setq helm-input-idle-delay                     0.01
@@ -186,12 +194,6 @@
 (use-package helm-org
   :config
   (setq helm-org-headings-fontify t))
-(global-set-key (kbd "M-x") 'helm-M-x)
-(global-set-key (kbd "C-x C-f") 'helm-find-files)
-(global-set-key (kbd "C-h i") 'helm-info)
-(global-set-key (kbd "C-h a") 'helm-apropos)
-(global-set-key (kbd "M-y") 'helm-show-kill-ring)
-(global-set-key (kbd "C-x b") 'helm-mini)
 (helm-mode 1)
 
 ;; Org mode
@@ -271,6 +273,8 @@
 
 ;; Magit
 (use-package magit
+  :ensure t
+  :demand t
   :bind
   (("C-c C-g s" . magit-status)
    ("C-c C-g d" . magit-diff)
