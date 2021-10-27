@@ -438,7 +438,8 @@
   :config
   (setq doom-modeline-irc nil
         doom-modeline-gnus nil
-        doom-modeline-buffer-encoding nil))
+        doom-modeline-buffer-encoding nil
+        doom-modeline-buffer-file-name-style 'relative-to-project))
 
 ;; ;; LSP Language Server Protocol
 ;; (use-package lsp-mode
