@@ -266,13 +266,6 @@
   (set-face-attribute 'org-table-header nil
                       :inherit 'org-table :weight 'bold :background "LightGray" :foreground "Black"))
 
-(with-eval-after-load 'org-agenda
-  (require 'org-projectile)
-  (mapcar #'(lambda (file)
-              (when (file-exists-p file)
-                (push file org-agenda-files)))
-          (org-projectile-todo-files)))
-
 ;; Magit
 (use-package magit
   :ensure t
@@ -293,6 +286,7 @@
 ;; Projectile
 (use-package projectile
   :ensure t
+  :init (projectile-mode 1)
   :diminish projectile-mode
   :bind
   (:map projectile-mode-map
@@ -301,21 +295,26 @@
   (setq projectile-project-search-path '("~/workspace")
         projectile-find-dir-includes-top-level t
         projectile-enable-caching t
-        projectile-switch-project-action #'projectile-commander)
+        projectile-switch-project-action #'projectile-commander
+        projectile-sort-order 'recently-active
+        projectile-completion-system 'helm)
   (projectile-register-project-type 'php '("composer.json")
                                     :src-dir "app"
 				                    :test "composer test"
 				                    :run "composer serve"
 				                    :test-suffix "Test"
 				                    :test-dir "tests"))
-(projectile-mode 1)
 (use-package org-projectile
   :ensure t
+  :after (org org-agenda projectile)
   :bind (("C-c n p" . org-projectile-project-todo-completing-read))
   :config
   (progn
-    (setq org-projectile-projects-file "~/org/todo.org")))
-(use-package helm-projectile)
+    (setq org-projectile-projects-file "~/org/todo.org"
+          org-agenda-files (append org-agenda-files (org-projectile-todo-files)))
+    (push (org-projectile-project-todo-entry) org-capture-templates)))
+(use-package helm-projectile
+  :after (helm projectile))
 (helm-projectile-on)
 
 ;; Smartparens
