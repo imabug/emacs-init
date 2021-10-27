@@ -292,8 +292,9 @@
 (use-package projectile
   :ensure t
   :diminish projectile-mode
-  :init
-  (projectile-mode t)
+  :bind
+  (:map projectile-mode-map
+        ("C-c p" . projectile-command-map))
   :config
   (setq projectile-project-search-path '("~/workspace")
         projectile-find-dir-includes-top-level t
@@ -304,10 +305,8 @@
 				                    :test "composer test"
 				                    :run "composer serve"
 				                    :test-suffix "Test"
-				                    :test-dir "tests")
-  :bind
-  (:map projectile-mode-map
-        ("C-c p" . projectile-command-map)))
+				                    :test-dir "tests"))
+(projectile-mode 1)
 (use-package org-projectile
   :ensure t
   :bind (("C-c n p" . org-projectile-project-todo-completing-read))
@@ -436,6 +435,7 @@
   :hook (after-init . doom-modeline-mode)
   :config
   (setq doom-modeline-irc nil
+        doom-modeline-gnus nil
         doom-modeline-buffer-encoding nil))
 
 ;; ;; LSP Language Server Protocol
