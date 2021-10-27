@@ -511,10 +511,11 @@
 (use-package ac-php)
 (use-package company-php
   :defer
-  :after company)
+  :after (php-mode company))
 (add-to-list 'auto-mode-alist '("\\.php\\'" . php-mode))
 (setq php-mode-coding-style 'psr2)
 (add-hook 'php-mode-hook 'php-enable-psr2-coding-style)
+(add-hook 'php-mode-hook 'php-enable-default-coding-style)
 (add-hook 'php-mode-hook #'php-align-setup)
 (add-hook 'php-mode-hook
           '(lambda ()
@@ -549,6 +550,7 @@
         web-mode-enable-auto-indentation t
         web-mode-enable-auto-opening t
         web-mode-enable-auto-quoting t
+        web-mode-enable-css-colorization t
         web-mode-enable-engine-detection t
         web-mode-markup-indent-offset 2
         web-mode-css-indent-offset 2
