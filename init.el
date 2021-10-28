@@ -9,7 +9,9 @@
 
 ;; Set up user info
 (setq user-full-name "Eugene Mah"
-      user-mail-address "eugenemah@gmail.com")
+      user-mail-address "eugenemah@gmail.com"
+      calendar-latitude 33.0752523
+      calendar-longitude -80.0220569)
 (setenv "SHELL" "/opt/bin/fish")
 
 ;; Start up maximized
@@ -170,29 +172,29 @@
   :config
   (require 'helm-config)
   (setq helm-input-idle-delay                     0.01
-        helm-reuse-last-window-split-state        t
         helm-always-two-windows                   t
-        helm-split-window-inside-p                nil
+        helm-actions-inherit-frame-settings       t
+        helm-allow-mouse                          t
+        helm-autoresize-max-height                0 ; it is %.
+        helm-autoresize-min-height                10 ; it is %.
+        helm-autoresize-mode                      t
+        helm-buffers-fuzzy-matching               t
+        helm-candidate-number-limit               500
         helm-commands-using-frame                 '(completion-at-point
                                                     helm-apropos
                                                     helm-eshell-prompts helm-imenu
                                                     helm-imenu-in-all-buffers)
-        helm-actions-inherit-frame-settings       t
+        helm-display-buffer-default-height        10 ;; Make the helm buffer smaller
+        helm-follow-mode-persistent               t
+        helm-frame-background-color               "DarkSlateGray"
+        helm-move-to-line-cycle-in-source         t
+        helm-recentf-fuzzy-match                  t
+        helm-reuse-last-window-split-state        t
+        helm-show-action-window-other-window      'left
+        helm-split-window-inside-p                nil
         helm-use-frame-when-more-than-two-windows t
         helm-use-frame-when-no-suitable-window    t
-        helm-display-buffer-default-height        10 ;; Make the helm buffer smaller
-        helm-frame-background-color               "DarkSlateGray"
-        helm-show-action-window-other-window      'left
-        helm-allow-mouse                          t
-        helm-move-to-line-cycle-in-source         t
-        helm-autoresize-mode                      t
-        helm-autoresize-max-height                0 ; it is %.
-        helm-autoresize-min-height                10 ; it is %.
-        helm-follow-mode-persistent               t
-        helm-candidate-number-limit               500
-        helm-visible-mark-prefix                  "✓"
-        helm-buffers-fuzzy-matching               t
-        helm-recentf-fuzzy-match                  t))
+        helm-visible-mark-prefix                  "✓"))
 (use-package helm-org
   :config
   (setq helm-org-headings-fontify t))
@@ -207,17 +209,14 @@
 (add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
 (add-hook 'org-mode-hook #'turn-on-font-lock)
 (setq org-agenda-files (list "~/org/todo.org")
-      org-directory "~/org/"
       org-default-notes-file "~/org/notes.org"
+      org-directory "~/org/"
       org-enable-github-support t
       org-enable-journal-support t
       org-journal-dir "~/org/journal/"
-      org-log-done 'time-date
-      org-projectile-file "~/org/todo.org"
+      org-log-done 'time-date      
       org-startup-truncated nil
-      org-use-speed-commands t
-      calendar-latitude 33.0752523
-      calendar-longitude -80.0220569)
+      org-use-speed-commands t)
 (setq org-ref-bibliography-notes "~/org/bibtex/notes.org"
       org-ref-default-bibliography '("~/org/bibtex/library.bib")
       org-ref-pdf-directory "~/org/bibtex/bibtex-pdfs")
@@ -311,6 +310,7 @@
   :config
   (progn
     (setq org-projectile-projects-file "~/org/todo.org"
+          org-projectile-file "~/org/todo.org"
           org-agenda-files (append org-agenda-files (org-projectile-todo-files)))
     (push (org-projectile-project-todo-entry) org-capture-templates)))
 (use-package helm-projectile
@@ -557,10 +557,17 @@
         web-mode-code-indent-offset 2))
 
 ;; LaTeX
+(require 'tex-site)
+(require 'reftex)
 (setq TeX-auto-save t)
 (setq TeX-parse-self t)
 (setq-default TeX-master nil)
 (setq TeX-PDF-mode t)
+(setq reftex-plug-into-AUCTeX t)
+(add-hook 'LaTeX-mode-hook 'auto-fill-mode)
+(add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
+(add-hook 'LaTeX-mode-hook 'turn-on-reftex)
+
 (use-package company-auctex
   :config
   (company-auctex-init))
@@ -570,3 +577,20 @@
 
 (provide 'init)
 ;;; init.el ends here
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   '(selectric-mode winum which-key web-mode use-package treemacs-projectile treemacs-magit treemacs-icons-dired smartparens org-projectile lsp-ui lsp-treemacs helm-projectile helm-org flycheck ess doom-modeline diminish company-php company-auctex bui auto-package-update auto-compile ac-php))
+ '(spice-output-local "Gnucap")
+ '(spice-simulator "Gnucap")
+ '(spice-waveform-viewer "Gwave"))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(css-selector ((t (:inherit default :foreground "#66CCFF"))))
+ '(font-lock-comment-face ((t (:foreground "#828282")))))
