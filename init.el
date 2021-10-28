@@ -569,8 +569,16 @@
 (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
 
 (use-package company-auctex
+  :defer t
   :config
   (company-auctex-init))
+
+(use-package company-math
+  :defer t)
+(with-eval-after-load 'company-math
+  (add-to-list 'company-backends 'company-math-symbols-latex)
+  (add-to-list 'company-backends 'company-math-symbols-unicode)
+  (add-to-list 'company-backends 'company-latex-commands))
 
 ;; Load custom settings from custom-file (custom-settings.el)
 ;; (add-hook 'after-init-hook (lambda () (load custom-file)))
@@ -583,7 +591,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(selectric-mode winum which-key web-mode use-package treemacs-projectile treemacs-magit treemacs-icons-dired smartparens org-projectile lsp-ui lsp-treemacs helm-projectile helm-org flycheck ess doom-modeline diminish company-php company-auctex bui auto-package-update auto-compile ac-php))
+   '(company-math selectric-mode winum which-key web-mode use-package treemacs-projectile treemacs-magit treemacs-icons-dired smartparens org-projectile lsp-ui lsp-treemacs helm-projectile helm-org flycheck ess doom-modeline diminish company-php company-auctex bui auto-package-update auto-compile ac-php))
  '(spice-output-local "Gnucap")
  '(spice-simulator "Gnucap")
  '(spice-waveform-viewer "Gwave"))
