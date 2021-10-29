@@ -213,7 +213,6 @@
       org-directory "~/org/"
       org-enable-github-support t
       org-enable-journal-support t
-      org-journal-dir "~/org/journal/"
       org-log-done 'time-date      
       org-startup-truncated nil
       org-use-speed-commands t)
@@ -234,7 +233,36 @@
                       ("dogs" . ?d)
                       ("radioclub" . ?C)))
 
+;; Org journal
+(use-package org-journal
+  :defer t
+  :init
+  (setq org-journal-prefix-key "C-c j ")
+  :config
+  (setq org-journal-dir "~/org/journal/"
+        org-journal-enable-agenda-integration t))
+(with-eval-after-load 'org
+  (require 'org-tempo)
+  (org-defkey org-mode-map [(meta return)] 'org-meta-return)
+  (add-to-list 'org-structure-template-alist '("sh" . "src shell"))
+  (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
+  (add-to-list 'org-structure-template-alist '("php" . "src php"))
+  ;; Change the face attributes for some org items
+  (set-face-attribute 'org-done nil :weight 'bold :box nil :foreground "#BBF0EF")
+  (set-face-attribute 'org-todo nil :weight 'bold :box nil :foreground "#FF7DBB")
+  (set-face-attribute 'org-agenda-structure nil
+                      :weight 'bold :box nil :foreground "#BBF0EF" :background "#1B324B")
+  (set-face-attribute 'org-table-header nil
+                      :inherit 'org-table :weight 'bold :background "LightGray" :foreground "Black"))
+
 ;; Org capture templates
+(defun org-journal-find-location ()
+  ;; Open today's journal, but specify a non-nil prefix argument in order to
+  ;; inhibit inserting the heading; org-capture will insert the heading.
+  (org-journal-new-entry t)
+  (unless (eq org-journal-file-type 'daily)
+    (org-narrow-to-subtree))
+  (goto-char (point-max)))
 (setq org-capture-templates '(("t" "Todo"
                                entry (file+headline "~/org/todo.org" "Tasks")
                                "** TODO %?\n %i\n %a")
@@ -249,21 +277,10 @@
                                "* %^{Description} %^g %?\n Added: %U")
                               ("l" "Lab book"
                                entry (file+olp+datetree "~/org/PhD/notes.org")
-                               "* %U\n %?\n %i\n %a")))
-
-(with-eval-after-load 'org
-  (require 'org-tempo)
-  (org-defkey org-mode-map [(meta return)] 'org-meta-return)
-  (add-to-list 'org-structure-template-alist '("sh" . "src shell"))
-  (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
-  (add-to-list 'org-structure-template-alist '("php" . "src php"))
-  ;; Change the face attributes for some org items
-  (set-face-attribute 'org-done nil :weight 'bold :box nil :foreground "#BBF0EF")
-  (set-face-attribute 'org-todo nil :weight 'bold :box nil :foreground "#FF7DBB")
-  (set-face-attribute 'org-agenda-structure nil
-                      :weight 'bold :box nil :foreground "#BBF0EF" :background "#1B324B")
-  (set-face-attribute 'org-table-header nil
-                      :inherit 'org-table :weight 'bold :background "LightGray" :foreground "Black"))
+                               "* %U\n %?\n %i\n %a")
+                              ("j" "Journal entry" plain (function org-journal-find-location)
+                               "** %(format-time-string org-journal-time-format)%^{Title}\n%i%?"
+                               :jump-to-captured t :immediate-finish t)))
 
 ;; Magit
 (use-package magit
@@ -591,7 +608,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(company-math selectric-mode winum which-key web-mode use-package treemacs-projectile treemacs-magit treemacs-icons-dired smartparens org-projectile lsp-ui lsp-treemacs helm-projectile helm-org flycheck ess doom-modeline diminish company-php company-auctex bui auto-package-update auto-compile ac-php))
+   '(org-journal company-math selectric-mode winum which-key web-mode use-package treemacs-projectile treemacs-magit treemacs-icons-dired smartparens org-projectile lsp-ui lsp-treemacs helm-projectile helm-org flycheck ess doom-modeline diminish company-php company-auctex bui auto-package-update auto-compile ac-php))
  '(spice-output-local "Gnucap")
  '(spice-simulator "Gnucap")
  '(spice-waveform-viewer "Gwave"))
