@@ -352,6 +352,10 @@
 ;; Enable strict mode globally
 (smartparens-global-strict-mode 1)
 
+;; Rainbow delimiters
+(use-package rainbow-delimiters
+   :hook (prog-mode . rainbow-delimiters-mode))
+
 ;; Flycheck
 ;; Use Fedora's emacs-flycheck package
 (require 'flycheck)
@@ -378,8 +382,8 @@
 ;; Which-key
 (use-package which-key
   :ensure t
-  :config
-  (which-key-mode))
+  :init (which-key-mode)
+  :diminish which-key-mode)
 
 ;; Treemacs
 (use-package treemacs
@@ -450,7 +454,7 @@
 (use-package all-the-icons)
 (use-package doom-modeline
   :ensure t
-  :hook (after-init . doom-modeline-mode)
+  :init (doom-modeline-mode 1)
   :config
   (setq doom-modeline-irc nil
         doom-modeline-gnus nil
@@ -608,7 +612,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(org-journal company-math selectric-mode winum which-key web-mode use-package treemacs-projectile treemacs-magit treemacs-icons-dired smartparens org-projectile lsp-ui lsp-treemacs helm-projectile helm-org flycheck ess doom-modeline diminish company-php company-auctex bui auto-package-update auto-compile ac-php))
+   '(rainbow-delimiters org-journal company-math selectric-mode winum which-key web-mode use-package treemacs-projectile treemacs-magit treemacs-icons-dired smartparens org-projectile lsp-ui lsp-treemacs helm-projectile helm-org flycheck ess doom-modeline diminish company-php company-auctex bui auto-package-update auto-compile ac-php))
  '(spice-output-local "Gnucap")
  '(spice-simulator "Gnucap")
  '(spice-waveform-viewer "Gwave"))
