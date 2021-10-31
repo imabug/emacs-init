@@ -257,8 +257,7 @@
 
 ;; Org capture templates
 (defun org-journal-find-location ()
-  ;; Open today's journal, but specify a non-nil prefix argument in order to
-  ;; inhibit inserting the heading; org-capture will insert the heading.
+  "Open today's journal, but specify a non-nil prefix argument in order to inhibit inserting the heading; 'org-capture' will insert the heading."
   (org-journal-new-entry t)
   (unless (eq org-journal-file-type 'daily)
     (org-narrow-to-subtree))
