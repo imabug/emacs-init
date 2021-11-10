@@ -213,7 +213,7 @@
       org-directory "~/org/"
       org-enable-github-support t
       org-enable-journal-support t
-      org-log-done 'time-date      
+      org-log-done 'time-date
       org-startup-truncated nil
       org-use-speed-commands t)
 (setq org-ref-bibliography-notes "~/org/bibtex/notes.org"
