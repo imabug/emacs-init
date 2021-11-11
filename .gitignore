@@ -21,3 +21,5 @@ savehist
 recentf
 transient/
 auto-save-list/
+.cache/
+projectile.cache
