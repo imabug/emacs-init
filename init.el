@@ -25,7 +25,8 @@
 (menu-bar-mode -1)
 ;; Show the time in the modeline
 (setq display-time-day-and-date t
-      display-time-24hr-format t)
+      display-time-24hr-format t
+      display-time-default-load-average nil)
 (display-time-mode 1)
 ;; Show column numbers
 (column-number-mode 1)
@@ -106,6 +107,8 @@
 (global-set-key (kbd "C-c C-f r") 'raise-frame)
 ;; Other keybindings
 (global-set-key (kbd "C-c ;") 'comment-or-uncomment-region)
+;; Make escape cancel everything
+(global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
 ;; Set a theme
 (load-theme 'tron-legacy t)
@@ -199,6 +202,7 @@
   :config
   (setq helm-org-headings-fontify t))
 (helm-mode 1)
+(use-package helm-bibtex)
 
 ;; Org mode
 ;; Use the version of org-mode that comes bundled with Fedora's emacs
@@ -216,9 +220,44 @@
       org-log-done 'time-date
       org-startup-truncated nil
       org-use-speed-commands t)
-(setq org-ref-bibliography-notes "~/org/bibtex/notes.org"
-      org-ref-default-bibliography '("~/org/bibtex/library.bib")
-      org-ref-pdf-directory "~/org/bibtex/bibtex-pdfs")
+(use-package org-ref
+  :init
+  (require 'bibtex)
+  (setq bibtex-autokey-year-length 4
+        bibtex-autokey-name-year-separator "-"
+        bibtex-autokey-year-title-separator "-"
+        bibtex-autokey-titleword-separator "-"
+        bibtex-autokey-titlewords 2
+        bibtex-autokey-titlewords-stretch 1
+        bibtex-autokey-titleword-length 5))
+(setq bibtex-completion-bibliography '("~/org/bibtex/library.bib"
+					 "~/org/bibtex/Books.bib"
+					 "~/org/bibtex/ICRP.bib"
+					 "~/org/bibtex/ICRU.bib")
+	bibtex-completion-library-path '("~/org/bibtex/pdfs/")
+	bibtex-completion-notes-path "~/org/bibtex/notes/"
+	bibtex-completion-notes-template-multiple-files "* ${author-or-editor}, ${title}, ${journal}, (${year}) :${=type=}: \n\nSee [[cite:&${=key=}]]\n"
+
+	bibtex-completion-additional-search-fields '(keywords)
+	bibtex-completion-display-formats
+	'((article       . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} ${journal:40}")
+	  (inbook        . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} Chapter ${chapter:32}")
+	  (incollection  . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} ${booktitle:40}")
+	  (inproceedings . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} ${booktitle:40}")
+	  (t             . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*}"))
+	bibtex-completion-pdf-open-function
+	(lambda (fpath)
+	  (call-process "open" nil 0 nil fpath)))
+(require 'org-ref-helm
+  :after helm-bibtex
+  :config
+  (setq org-ref-insert-link-function 'org-ref-insert-link-hydra/body
+        org-ref-insert-cite-function 'org-ref-cite-insert-helm
+        org-ref-insert-label-function 'org-ref-insert-label-link
+        org-ref-insert-ref-function 'org-ref-insert-ref-link
+        org-ref-cite-onclick-function (
+                                       lambda(_) (org-ref-citation-hydra/body))))
+(define-key org-mode-map (kbd "C-c ]") 'org-ref-insert-link-hydra)
 
 ;; Org-mode key bindings
 (global-set-key (kbd "C-c l") #'org-store-link)
@@ -336,22 +375,22 @@
 (helm-projectile-on)
 
 ;; Smartparens
-(use-package smartparens
-  :diminish smartparens-mode
-  :bind
-  (:map smartparens-mode-map
-        ("C-)" . sp-forward-slurp-sexp)
-        ("C-}" . sp-forward-barf-sexp)
-        ("C-(" . sp-backward-slurp-sexp)
-        ("C-{" . sp-backward-barf-sexp))
-  :config
-  (progn
-    ;; Stop pairing single quotes in elisp
-    (sp-local-pair 'emacs-lisp-mode "'" nil :actions nil)
-    (sp-local-pair 'org-mode "[" nil :actions nil)
-    (sp-local-pair 'org-mode "~" "~")))
+;; (use-package smartparens
+;;   :diminish smartparens-mode
+;;   :bind
+;;   (:map smartparens-mode-map
+;;         ("C-)" . sp-forward-slurp-sexp)
+;;         ("C-}" . sp-forward-barf-sexp)
+;;         ("C-(" . sp-backward-slurp-sexp)
+;;         ("C-{" . sp-backward-barf-sexp))
+;;   :config
+;;   (progn
+;;     ;; Stop pairing single quotes in elisp
+;;     (sp-local-pair 'emacs-lisp-mode "'" nil :actions nil)
+;;     (sp-local-pair 'org-mode "[" nil :actions nil)
+;;     (sp-local-pair 'org-mode "~" "~")))
 ;; Enable strict mode globally
-(smartparens-global-strict-mode 1)
+;; (smartparens-global-strict-mode 1)
 
 ;; Rainbow delimiters
 (use-package rainbow-delimiters
@@ -613,7 +652,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(rainbow-delimiters org-journal company-math selectric-mode winum which-key web-mode use-package treemacs-projectile treemacs-magit treemacs-icons-dired smartparens org-projectile lsp-ui lsp-treemacs helm-projectile helm-org flycheck ess doom-modeline diminish company-php company-auctex bui auto-package-update auto-compile ac-php))
+   '(org-ref-helm org-ref helm-bibtex rainbow-delimiters org-journal company-math selectric-mode winum which-key web-mode use-package treemacs-projectile treemacs-magit treemacs-icons-dired smartparens org-projectile lsp-ui lsp-treemacs helm-projectile helm-org flycheck ess doom-modeline diminish company-php company-auctex bui auto-package-update auto-compile ac-php))
  '(spice-output-local "Gnucap")
  '(spice-simulator "Gnucap")
  '(spice-waveform-viewer "Gwave"))
