@@ -247,7 +247,8 @@
 	bibtex-completion-pdf-open-function
 	(lambda (fpath)
 	  (call-process "open" nil 0 nil fpath)))
-(require 'org-ref-helm)
+(with-eval-after-load 'org-ref
+    (require 'org-ref-helm))
 (setq org-ref-insert-link-function 'org-ref-insert-link-hydra/body
         org-ref-insert-cite-function 'org-ref-cite-insert-helm
         org-ref-insert-label-function 'org-ref-insert-label-link
