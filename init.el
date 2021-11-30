@@ -237,7 +237,6 @@
 	bibtex-completion-library-path '("~/org/bibtex/pdfs/")
 	bibtex-completion-notes-path "~/org/bibtex/notes/"
 	bibtex-completion-notes-template-multiple-files "* ${author-or-editor}, ${title}, ${journal}, (${year}) :${=type=}: \n\nSee [[cite:&${=key=}]]\n"
-
 	bibtex-completion-additional-search-fields '(keywords)
 	bibtex-completion-display-formats
 	'((article       . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} ${journal:40}")
@@ -248,15 +247,13 @@
 	bibtex-completion-pdf-open-function
 	(lambda (fpath)
 	  (call-process "open" nil 0 nil fpath)))
-(require 'org-ref-helm
-  :after helm-bibtex
-  :config
-  (setq org-ref-insert-link-function 'org-ref-insert-link-hydra/body
+(require 'org-ref-helm)
+(setq org-ref-insert-link-function 'org-ref-insert-link-hydra/body
         org-ref-insert-cite-function 'org-ref-cite-insert-helm
         org-ref-insert-label-function 'org-ref-insert-label-link
         org-ref-insert-ref-function 'org-ref-insert-ref-link
         org-ref-cite-onclick-function (
-                                       lambda(_) (org-ref-citation-hydra/body))))
+                                       lambda(_) (org-ref-citation-hydra/body)))
 (define-key org-mode-map (kbd "C-c ]") 'org-ref-insert-link-hydra)
 
 ;; Org-mode key bindings
@@ -499,7 +496,7 @@
   (setq doom-modeline-irc nil
         doom-modeline-gnus nil
         doom-modeline-buffer-encoding nil
-        doom-modeline-buffer-file-name-style 'relative-to-project))
+        doom-modeline-buffer-file-name-style 'auto))
 
 ;; ;; LSP Language Server Protocol
 ;; (use-package lsp-mode
