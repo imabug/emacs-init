@@ -44,6 +44,7 @@
                 treemacs-mode-hook
                 eshell-mode-hook))
   (add-hook mode (lambda () (display-line-numbers-mode 0))))
+
 ;; Set up some fonts
 (defvar em/default-font-size 110)
 (defvar em/default-variable-font-size 110)
@@ -53,12 +54,14 @@
                     :font "Cantarell"
                     :height em/default-variable-font-size
                     :weight 'regular)
+
 ;; Backup settings
 (setq backup-directory-alist '(("." . "~/.config/emacs/backups")))
 (setq delete-old-versions t)
 (setq version-control t)
 (setq vc-make-backup-files t)
 (setq auto-save-file-name-transforms '((".*" "~/.config/emacs/auto-save-list" t)))
+
 ;; History settings
 (setq savehist-file "~/.config/emacs/savehist")
 (savehist-mode 1)
@@ -78,11 +81,12 @@
 (put 'helm-M-x-input-history                'history-length 50)
 (put 'minibuffer-history                    'history-length 50)
 (put 'kill-ring                             'history-length 50)
+
 ;; Set a theme
 (load-theme 'tron-legacy t)
 (setq tron-legacy-theme-vivid-cursor t)
 
-;; Keybindings
+;; Mouse button bindings
 (global-set-key [mouse-6] 'backward-word)
 (global-set-key [mouse-7] 'forward-word)
 (global-set-key [mouse-8] 'scroll-up-command)
@@ -310,7 +314,7 @@
   (define-key php-mode-map (kbd "C-c C--") 'php-current-class)
   (define-key php-mode-map (kbd "C-c C-=") 'php-current-namespace))
 
-;; ;; Web-mode
+;; Web-mode
 (use-package web-mode
   :custom-face
   (css-selector ((t (:inherit default :foreground "#66CCFF"))))
@@ -361,6 +365,8 @@
 ;; Define a minor mode to hold some of my keybindings
 (define-minor-mode em-keymaps-mode
   "Personal keybindings"
+  :init-value nil
+  :global t
   :keymap (let ((map (make-sparse-keymap)))
             ;; Emacs frame-related keybindings
             (define-key map (kbd "C-c C-f d") 'delete-frame)
@@ -379,7 +385,7 @@
             (define-key map (kbd "C-c ;") 'comment-or-uncomment-region)
             (define-key map (kbd "<escape>") 'keyboard-escape-quit)
             map))
-(add-hook 'text-mode-hook 'em-keymaps-mode)
+(add-hook 'after-init-hook 'em-keymaps-mode)
 (em-keymaps-mode 1)
 
 (provide 'init)
