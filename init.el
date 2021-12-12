@@ -372,7 +372,6 @@
             (define-key map (kbd "C-c C-f d") 'delete-frame)
             (define-key map (kbd "C-c C-f n") 'make-frame)
             (define-key map (kbd "C-c C-f o") 'other-frame)
-            (define-key map (kbd "C-c C-f s") 'select-frame)
             (define-key map (kbd "C-c C-f l") 'lower-frame)
             (define-key map (kbd "C-c C-f r") 'raise-frame)
             ;; Org-mode keybindings
@@ -390,3 +389,20 @@
 
 (provide 'init)
 ;;; init.el ends here
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   '(company-math company-auctex web-mode company-php ac-php php-mode which-key smartparens rainbow-delimiters helm-org helm company magit org-journal diminish auto-package-update auto-compile use-package))
+ '(spice-output-local "Gnucap")
+ '(spice-simulator "Gnucap")
+ '(spice-waveform-viewer "Gwave"))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(css-selector ((t (:inherit default :foreground "#66CCFF"))))
+ '(font-lock-comment-face ((t (:foreground "#828282")))))
