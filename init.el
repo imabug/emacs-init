@@ -405,4 +405,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(css-selector ((t (:inherit default :foreground "#66CCFF"))))
- '(font-lock-comment-face ((t (:foreground "#828282")))))
+ '(font-lock-comment-face ((t (:foreground "#828282"))))
+ '(org-agenda-structure ((t (:background "#1B324B" :foreground "#BBF0EF" :box nil :weight normal))))
+ '(org-done ((t (:foreground "#BBF0EF" :box nil :weight bold))))
+ '(org-todo ((t (:foreground "#FF7DBB" :box nil :weight bold)))))
