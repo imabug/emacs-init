@@ -26,6 +26,7 @@
 (display-time-mode 1)
 (column-number-mode 1)                     ; Show column numbers
 (show-paren-mode 1)
+(recentf-mode 1)                           ; Remember recently edited files
 (setq initial-major-mode 'text-mode)
 (add-hook 'text-mode-hook 'turn-on-visual-line-mode)
 (add-hook 'text-mode-hook 'auto-fill-mode)
@@ -64,7 +65,6 @@
 
 ;; History settings
 (setq savehist-file "~/.config/emacs/savehist")
-(savehist-mode 1)
 (setq history-delete-duplicates t
       history-length 50
       history-delete-duplicates t
@@ -81,6 +81,7 @@
 (put 'helm-M-x-input-history                'history-length 50)
 (put 'minibuffer-history                    'history-length 50)
 (put 'kill-ring                             'history-length 50)
+(savehist-mode 1)
 
 ;; Set a theme
 (load-theme 'tron-legacy t)
@@ -151,7 +152,6 @@
                       ("radioclub" . ?C)))
 ;; Org journal
 (use-package org-journal
-  :defer t
   :init
   (setq org-journal-prefix-key "C-c j ")
   :config
