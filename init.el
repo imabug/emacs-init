@@ -152,10 +152,13 @@
                       ("radioclub" . ?C)))
 ;; Org journal
 (use-package org-journal
+  :ensure t
+  :defer t
   :init
   (setq org-journal-prefix-key "C-c j ")
   :config
   (setq org-journal-dir "~/org/journal/"
+        org-journal-file-type 'weekly
         org-journal-enable-agenda-integration t))
 ;; Org capture templates
 (defun org-journal-find-location ()
@@ -170,9 +173,10 @@
                               ("a" "Appointment"
                                entry (file+headline "~/org/todo.org" "Calendar")
                                "** APPT %^{Description} %^g\n %?\n Added: %U")
-                              ("j" "Journal"
-                               entry (file+olp+datetree "~/org/journal/journal.org")
-                               "* %?\nEntered on %U\n %i\n %a")
+                              ("j" "Journal entry"
+                               plain (funnction org-journal-find-location)
+                               "** %(format-time-string org-journal-time-format)%^{Title}\n%i%?"
+                               :jump-to-captured t :immediate-finish t)
                               ("n" "Notes"
                                entry (file+olp+datetree "~/org/notes.org")
                                "* %^{Description} %^g %?\n Added: %U")
@@ -206,7 +210,7 @@
   :hook ((prog-mode LaTeX-mode latex-mode ess-r-mode) . company-mode)
   :custom
   (company-tooltip-align-annotations t)
-  (company-require-match 'never)
+  (company-require-match nil)
   ;; Don't use company in the following modes
   (company-global-modes '(not shell-mode eaf-mode))
   (company-idle-delay 0.2)
@@ -339,12 +343,15 @@
         web-mode-code-indent-offset 2))
 
 ;; LaTeX
-(require 'tex-site)
-(require 'reftex)
-(setq TeX-auto-save t)
-(setq TeX-parse-self t)
-(setq-default TeX-master nil)
-(setq TeX-PDF-mode t)
+;;(require 'tex-site)
+(use-package tex
+  :ensure auctex
+  :config
+  (setq TeX-auto-save t
+        TeX-parse-self t
+        TeX-PDF-mode t
+        TeX-master nil))
+(use-package reftex)
 (setq reftex-plug-into-AUCTeX t)
 (add-hook 'LaTeX-mode-hook 'auto-fill-mode)
 (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
