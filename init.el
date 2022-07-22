@@ -304,7 +304,7 @@
 (add-hook 'php-mode-hook 'php-enable-default-coding-style)
 (add-hook 'php-mode-hook #'php-align-setup)
 (add-hook 'php-mode-hook
-          '(lambda ()
+          #'(lambda ()
              (company-mode t)
              (require 'company-php)
              (set (make-local-variable 'company-backends)
