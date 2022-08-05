@@ -10,7 +10,7 @@
 (setq user-full-name "Eugene Mah"
       user-mail-address "eugenemah@gmail.com"
       user-login-name "eugenem")
-(setenv "SHELL" "/opt/bin/fish")
+(setenv "SHELL" "/bin/fish")
 
 ;; Start emacs frame maximized
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
