@@ -10,7 +10,7 @@
 (setq user-full-name "Eugene Mah"
       user-mail-address "eugenemah@gmail.com"
       user-login-name "eugenem")
-(setenv "SHELL" "/opt/bin/fish")
+(setenv "SHELL" "/bin/fish")
 
 ;; Start emacs frame maximized
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
@@ -182,10 +182,7 @@
                                "* %^{Description} %^g %?\n Added: %U")
                               ("l" "Lab book"
                                entry (file+olp+datetree "~/org/PhD/notes.org")
-                               "* %U\n %?\n %i\n %a")
-                              ("j" "Journal entry" plain (function org-journal-find-location)
-                               "** %(format-time-string org-journal-time-format)%^{Title}\n%i%?"
-                               :jump-to-captured t :immediate-finish t)))
+                               "* %U\n %?\n %i\n %a")))
 
 ;; Magit
 (use-package magit
