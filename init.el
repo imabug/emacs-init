@@ -174,11 +174,14 @@
                                entry (file+headline "~/org/todo.org" "Calendar")
                                "** APPT %^{Description} %^g\n %?\n Added: %U")
                               ("j" "Journal entry"
-                               plain (funnction org-journal-find-location)
+                               plain (function org-journal-find-location)
                                "** %(format-time-string org-journal-time-format)%^{Title}\n%i%?"
                                :jump-to-captured t :immediate-finish t)
                               ("n" "Notes"
                                entry (file+olp+datetree "~/org/notes.org")
+                               "* %^{Description} %^g %?\n Added: %U")
+                              ("s" "Scractchpad"
+                               entry (file+olp+datetree "~/org/scratchpad.org" "Scratchpad")
                                "* %^{Description} %^g %?\n Added: %U")
                               ("l" "Lab book"
                                entry (file+olp+datetree "~/org/PhD/notes.org")
