@@ -47,8 +47,8 @@
   (add-hook mode (lambda () (display-line-numbers-mode 0))))
 
 ;; Set up some fonts
-(defvar em/default-font-size 110)
-(defvar em/default-variable-font-size 110)
+(defvar em/default-font-size 120)
+(defvar em/default-variable-font-size 120)
 (set-face-attribute 'default nil :font "Hack" :height em/default-font-size)
 (set-face-attribute 'fixed-pitch nil :font "Hack" :height em/default-font-size)
 (set-face-attribute 'variable-pitch nil
