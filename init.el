@@ -135,9 +135,10 @@
 (require 'org)
 (add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
 (add-hook 'org-mode-hook #'turn-on-font-lock)
-(setq org-agenda-files (list "~/org/todo.org")
+(setq org-directory "~/org/"
+      org-agenda-files (list "~/org/todo.org")
       org-default-notes-file "~/org/notes.org"
-      org-directory "~/org/"
+      org-archive-location "~/org/archive/"
       org-enable-github-support t
       org-enable-journal-support t
       org-log-done 'time-date
@@ -168,23 +169,23 @@
     (org-narrow-to-subtree))
   (goto-char (point-max)))
 (setq org-capture-templates '(("t" "Todo"
-                               entry (file+headline "~/org/todo.org" "Tasks")
+                               entry (file+headline "todo.org" "Tasks")
                                "** TODO %?\n %i\n %a")
                               ("a" "Appointment"
-                               entry (file+headline "~/org/todo.org" "Calendar")
+                               entry (file+headline "todo.org" "Calendar")
                                "** APPT %^{Description} %^g\n %?\n Added: %U")
                               ("j" "Journal entry"
                                plain (function org-journal-find-location)
                                "** %(format-time-string org-journal-time-format)%^{Title}\n%i%?"
                                :jump-to-captured t :immediate-finish t)
                               ("n" "Notes"
-                               entry (file+olp+datetree "~/org/notes.org")
+                               entry (file+olp+datetree "notes.org")
                                "* %^{Description} %^g %?\n Added: %U")
                               ("s" "Scractchpad"
-                               entry (file+olp+datetree "~/org/scratchpad.org" "Scratchpad")
-                               "* %^{Description} %^g %?\n Added: %U")
+                               entry (file+olp+datetree "scratchpad.org" "Scratchpad")
+                               "** %^{Description} %^g %?\n Added: %U")
                               ("l" "Lab book"
-                               entry (file+olp+datetree "~/org/PhD/notes.org")
+                               entry (file+olp+datetree "PhD/notes.org")
                                "* %U\n %?\n %i\n %a")))
 
 ;; Magit
