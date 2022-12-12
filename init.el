@@ -34,8 +34,8 @@
 (setq-default tab-always-indent t
               indent-tabs-mode nil
               tab-width 4
-              require-final-newline t)
-(fset 'yes-or-no-p 'y-or-n-p)
+              require-final-newline t
+              use-short-answers t)
 (prefer-coding-system 'utf-8)
 (global-display-line-numbers-mode t)       ;Display line numbers
 ;; Disable line numbers for some modes
@@ -142,7 +142,8 @@
       org-enable-journal-support t
       org-log-done 'time-date
       org-startup-truncated nil
-      org-use-speed-commands t)
+      org-use-speed-commands t
+      org-return-follows-link t)
 ;; Org tags
 (setq org-tag-alist '(("WORK" . ?W)
                       ("home" . ?h)
@@ -184,6 +185,17 @@
                                entry (file+olp+datetree "~/org/PhD/notes.org")
                                "* %U\n %?\n %i\n %a")))
 
+;; Projectile
+(use-package projectile
+  :ensure t
+  :bind (:map projectile-mode-map
+              ("C-c p" . projectile-command-map))
+  :init
+  (setq projectile-mode-line-function '(lambda () (format "[%s]" (projectile-project-name))))
+  :config
+  (projectile-mode +1)
+)
+
 ;; Magit
 (use-package magit
   :ensure t
@@ -205,14 +217,15 @@
 (use-package company
   :diminish company-mode
   :hook ((prog-mode LaTeX-mode latex-mode ess-r-mode) . company-mode)
+  :init
+  (setq company-idle-delay 0.2
+        company-minimum-prefix-length 3
+        company-tooltip-align-annotations t
+        company-require-match nil
+        company-selection-wrap-around t)
   :custom
-  (company-tooltip-align-annotations t)
-  (company-require-match nil)
   ;; Don't use company in the following modes
   (company-global-modes '(not shell-mode eaf-mode))
-  (company-idle-delay 0.2)
-  (company-minimum-prefix-length 3)
-  (company-selection-wrap-around t)
   (company-text-face-extra-attributes '(:weight bold))
   :config
   (global-company-mode 1))
@@ -256,10 +269,18 @@
 (use-package helm-org
   :config
   (setq helm-org-headings-fontify t))
+(use-package helm-projectile)
 (helm-mode 1)
+(helm-projectile-on)
+(setq projectile-completion-system 'helm
+      projectile-switch-project-action 'helm-projectile)
 
 (use-package rainbow-delimiters
-  :hook (prog-mode . rainbow-delimiters-mode))
+  :ensure t)
+
+(use-package prog-mode
+  :ensure nil
+  :hook ((prog-mode . rainbow-delimiters-mode)))
 
 ;;Smartparens
 (use-package smartparens
