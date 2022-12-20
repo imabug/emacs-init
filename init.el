@@ -304,7 +304,6 @@
       company-tooltip-align-annotations t
       company-require-match nil
       company-selection-wrap-around t)
-;;(add-hook 'LaTeX-mode #'company-mode)
 (add-hook 'after-init-hook 'global-company-mode)
 
 ;; Helm
@@ -490,6 +489,7 @@
 (add-hook 'LaTeX-mode-hook 'auto-fill-mode)
 (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
 (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
+(add-hook 'LaTeX-mode-hook #'company-mode)
 
 (use-package company-auctex
   :straight t
