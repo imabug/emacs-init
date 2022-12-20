@@ -475,6 +475,13 @@
   (add-to-list 'company-backends 'company-math-symbols-unicode)
   (add-to-list 'company-backends 'company-latex-commands))
 
+;; ESS
+(use-package ess
+  :straight t
+  :config
+  (setq ess-ask-for-ess-directory nil))
+(require 'ess-site)
+
 ;; Define a minor mode to hold some of my keybindings
 (define-minor-mode em-keymaps-mode
   "Personal keybindings"
