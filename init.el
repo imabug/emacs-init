@@ -134,15 +134,36 @@
 (use-package diminish
   :straight t)
 
+(require 'iedit)
+(defun iedit-dwim (arg)
+  "Starts iedit but uses \\[narrow-to-defun] to limit its scope."
+  (interactive "P")
+  (if arg
+      (iedit-mode)
+    (save-excursion
+      (save-restriction
+        (widen)
+        ;; this function determines the scope of `iedit-start'.
+        (if iedit-mode
+            (iedit-done)
+          ;; `current-word' can of course be replaced by other
+          ;; functions.
+          (narrow-to-defun)
+          (iedit-start (current-word) (point-min) (point-max)))))))
+
+(global-set-key (kbd "C-;") 'iedit-dwim)
+
 ;; Rainbow-delimiters
 (use-package rainbow-delimiters
-  :straight t)
+  :straight t
+  :demand t)
 (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
 (rainbow-delimiters-mode t)
 
 ;;Smartparens
 (use-package smartparens
   :straight t
+  :demand t
   :diminish smartparens-mode
   :bind
   (:map smartparens-mode-map
@@ -244,6 +265,8 @@
 
 ;; Which-key
 (use-package which-key
+  :straight t
+  :demand t
   :init
   (which-key-setup-side-window-right-bottom)
   (which-key-mode))
@@ -376,6 +399,7 @@
 
 ;; Org journal
 (use-package org-journal
+  :straight t
   :demand t
   :init
   (setq org-journal-prefix-key "C-c j ")
@@ -394,10 +418,13 @@
 ;; Languages
 ;; PHP
 (use-package php-mode
+  :straight t
   :config
   (setq php-mode-coding-style 'psr2))
-(use-package ac-php)
+(use-package ac-php
+    :straight t)
 (use-package company-php
+  :straight t
   :after (php-mode company))
 (add-to-list 'auto-mode-alist '("\\.php\\'" . php-mode))
 (add-hook 'php-mode-hook 'php-enable-psr2-coding-style)
@@ -420,6 +447,7 @@
 
 ;; Web-mode
 (use-package web-mode
+  :straight t
   :custom-face
   (css-selector ((t (:inherit default :foreground "#66CCFF"))))
   (font-lock-comment-face ((t (:foreground "#828282"))))
@@ -533,8 +561,6 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(css-selector ((t (:inherit default :foreground "#66CCFF"))) t)
- '(font-lock-comment-face ((t (:foreground "#828282"))))
  '(org-agenda-structure ((t (:background "#1B324B" :foreground "#BBF0EF" :box nil :weight normal))))
  '(org-done ((t (:foreground "#BBF0EF" :box nil :weight bold))))
  '(org-todo ((t (:foreground "#FF7DBB" :box nil :weight bold)))))
