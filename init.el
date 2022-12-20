@@ -283,12 +283,14 @@
   :config
   (projectile-mode +1))
 
+;; Magit
 (require 'magit)
 (setq magit-credential-cache-daemon-socket nil
       magit-refresh-status-buffer nil
       magit-auto-revert-mode t
       magit-define-global-key-bindings t)
 
+;; Company
 (straight-use-package '(company :type built-in))
 (setq company-backends '(company-capf
                          company-dabbrev-code
@@ -298,7 +300,7 @@
                           company-echo-metadata-frontend)
       company-format-margin-function 'company-vscode-dark-icons-margin
       company-global-modes '(not shell-mode eaf-mode)
-      company-idle-delay 0.2
+      company-idle-delay 0.1
       company-minimum-prefix-length 3
       company-show-numbers t
       company-tooltip-align-annotations t
