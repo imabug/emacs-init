@@ -5,6 +5,8 @@
 (setq package-enable-at-startup nil)
 ;; Don't ask if emacs should follow symlinks
 (setq vc-follow-symlinks t)
+;; Don't enable package.el
+(setq package-enable-at-startup nil)
 
 (provide 'early-init)
 ;;; early-init ends here
