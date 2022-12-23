@@ -1,4 +1,5 @@
 ;;; init.el -- -*- lexical-binding: t -*-
+;;; Commentary:
 
 ;;; Code:
 ;; Some path settings
