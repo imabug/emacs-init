@@ -85,8 +85,8 @@
 (savehist-mode 1)
 
 ;; Set a theme
-(load-theme 'tron-legacy t)
 (setq tron-legacy-theme-vivid-cursor t)
+(load-theme 'tron-legacy t)
 
 ;; Mouse button bindings
 (global-set-key [mouse-6] 'backward-word)
@@ -136,7 +136,7 @@
 
 (require 'iedit)
 (defun iedit-dwim (arg)
-  "Starts iedit but uses \\[narrow-to-defun] to limit its scope."
+  "Start iedit but use \\[narrow-to-defun] to limit its scope."
   (interactive "P")
   (if arg
       (iedit-mode)
@@ -358,6 +358,19 @@
 (setq projectile-completion-system 'helm
       projectile-switch-project-action 'helm-projectile)
 
+;; Flycheck
+(use-package flycheck
+  :straight t
+  :demand t
+  :config
+  (setq flycheck-idle-change-delay 1
+        flycheck-error-list-minimum-level 'warning)
+  :init (global-flycheck-mode))
+(use-package flycheck-color-mode-line
+  :straight t)
+(eval-after-load "flycheck"
+  '(add-hook 'flycheck-mode-hook 'flycheck-color-mode-line-mode))
+
 ;; Org mode
 (straight-use-package '(org :type built-in))
 (setq org-directory "~/org/"
@@ -427,10 +440,19 @@
 (use-package company-php
   :straight t
   :after (php-mode company))
+(use-package flycheck-phpstan
+  :straight t
+  :config
+  (setq phpstan-level 6))
+(defun my-php-mode-setup ()
+  "My PHP-mode hook."
+  (require 'flycheck-phpstan)
+  (flycheck-mode t))
 (add-to-list 'auto-mode-alist '("\\.php\\'" . php-mode))
 (add-hook 'php-mode-hook 'php-enable-psr2-coding-style)
 (add-hook 'php-mode-hook 'php-enable-default-coding-style)
 (add-hook 'php-mode-hook #'php-align-setup)
+(add-hook 'php-mode-hook 'my-php-mode-setup)
 (add-hook 'php-mode-hook
           #'(lambda ()
              (company-mode t)
@@ -514,7 +536,7 @@
 
 ;; Define a minor mode to hold some of my keybindings
 (define-minor-mode em-keymaps-mode
-  "Personal keybindings"
+  "Personal keybindings."
   :init-value nil
   :global t
   :keymap (let ((map (make-sparse-keymap)))
@@ -538,7 +560,7 @@
             (define-key map (kbd "C-c C-g c") 'magit-commit)
             (define-key map (kbd "C-c C-g p") 'magit-push)
             (define-key map (kbd "C-c C-g P") 'magit-pull)
-            (define-key map (kbd "C-c C-g f") 'magit-fetch)            
+            (define-key map (kbd "C-c C-g f") 'magit-fetch)
             ;; Other keybindings
             (define-key map (kbd "C-c ;") 'comment-or-uncomment-region)
             (define-key map (kbd "<escape>") 'keyboard-escape-quit)
