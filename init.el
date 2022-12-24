@@ -20,14 +20,15 @@
 (setq inhibit-startup-screen t)            ;Don't show the startup screen
 (tool-bar-mode -1)                         ;Don't show the tool bar
 (menu-bar-mode -1)                         ;Don't show the menu bar
+(setq calendar-week-start-day 1)           ;Calendar week starts Monday
 ;; Show the time in the modeline
 (setq display-time-day-and-date t
       display-time-24hr-format t
       display-time-default-load-average nil)
 (display-time-mode 1)
-(column-number-mode 1)                     ; Show column numbers
+(column-number-mode 1)                     ;Show column numbers
 (show-paren-mode 1)
-(recentf-mode 1)                           ; Remember recently edited files
+(recentf-mode 1)                           ;Remember recently edited files
 (setq initial-major-mode 'text-mode)
 (add-hook 'text-mode-hook 'turn-on-visual-line-mode)
 (add-hook 'text-mode-hook 'auto-fill-mode)
@@ -63,6 +64,7 @@
 (setq delete-old-versions t)
 (setq version-control t)
 (setq vc-make-backup-files t)
+(setq auto-save-timeout 120)               ;Autosave every 2 minutes
 (setq auto-save-file-name-transforms '((".*" "~/.config/emacs/auto-save-list" t)))
 
 ;; History settings
@@ -90,10 +92,11 @@
 (load-theme 'tron-legacy t)
 
 ;; Mouse button bindings
-(global-set-key [mouse-6] 'backward-word)
-(global-set-key [mouse-7] 'forward-word)
-(global-set-key [mouse-8] 'scroll-up-command)
-(global-set-key [mouse-9] 'scroll-down-command)
+(global-set-key [mouse-2] 'mark-whole-buffer)    ; wheel button
+(global-set-key [mouse-6] 'backward-word)        ; thumb wheel up
+(global-set-key [mouse-7] 'forward-word)         ; thumb wheel down
+(global-set-key [mouse-8] 'scroll-up-command)    ; forward thumb button
+(global-set-key [mouse-9] 'scroll-down-command)  ; back thumb button
 (global-set-key [mouse-10] 'list-buffers)
 
 ;; Bootstrap code for straight.el
@@ -184,10 +187,10 @@
 (sp-with-modes sp--lisp-modes
   (sp-local-pair "(" nil
                  :wrap "C-("
-                 :pre-handlers '(my-add-space-before-sexp-insertion)
-                 :post-handlers '(my-add-space-after-sexp-insertion)))
+                 :pre-handlers '(em/add-space-before-sexp-insertion)
+                 :post-handlers '(em/add-space-after-sexp-insertion)))
 
-(defun my-add-space-after-sexp-insertion (id action _context)
+(defun em/add-space-after-sexp-insertion (id action _context)
   (when (eq action 'insert)
     (save-excursion
       (forward-char (sp-get-pair id :cl-l))
@@ -195,7 +198,7 @@
                 (looking-at (sp--get-opening-regexp)))
         (insert " ")))))
 
-(defun my-add-space-before-sexp-insertion (id action _context)
+(defun em/add-space-before-sexp-insertion (id action _context)
   (when (eq action 'insert)
     (save-excursion
       (backward-char (length id))
@@ -207,12 +210,12 @@
 ;;; Smartparens PHP
 (sp-with-modes '(php-mode)
   (sp-local-pair "/**" "*/" :post-handlers '(("| " "SPC")
-                                             (my-php-handle-docstring "RET")))
+                                             (em/php-handle-docstring "RET")))
   (sp-local-pair "/*." ".*/" :post-handlers '(("| " "SPC")))
-  (sp-local-pair "{" nil :post-handlers '(("||\n[i]" "RET") my-php-wrap-handler))
+  (sp-local-pair "{" nil :post-handlers '(("||\n[i]" "RET") em/php-wrap-handler))
   (sp-local-pair "(" nil :prefix "\\(\\sw\\|\\s_\\)*"))
 
-(defun my-php-wrap-handler (&rest _ignored)
+(defun em/php-wrap-handler (&rest _ignored)
   (save-excursion
     (sp-get sp-last-wrapped-region
       (goto-char :beg-in)
@@ -225,7 +228,7 @@
         (newline-and-indent))
       (indent-region :beg-prf :end-suf))))
 
-(defun my-php-handle-docstring (&rest _ignored)
+(defun em/php-handle-docstring (&rest _ignored)
   (-when-let (line (save-excursion
                      (forward-line)
                      (thing-at-point 'line)))
@@ -445,7 +448,7 @@
   :straight t
   :config
   (setq phpstan-level 6))
-(defun my-php-mode-setup ()
+(defun em/php-mode-setup ()
   "My PHP-mode hook."
   (require 'flycheck-phpstan)
   (flycheck-mode t))
@@ -453,7 +456,7 @@
 (add-hook 'php-mode-hook 'php-enable-psr2-coding-style)
 (add-hook 'php-mode-hook 'php-enable-default-coding-style)
 (add-hook 'php-mode-hook #'php-align-setup)
-(add-hook 'php-mode-hook 'my-php-mode-setup)
+(add-hook 'php-mode-hook 'em/php-mode-setup)
 (add-hook 'php-mode-hook
           #'(lambda ()
              (company-mode t)
@@ -565,6 +568,7 @@
             ;; Other keybindings
             (define-key map (kbd "C-c ;") 'comment-or-uncomment-region)
             (define-key map (kbd "<escape>") 'keyboard-escape-quit)
+            (define-key map (kbd "C-c C-a") 'mark-whole-buffer)
             map))
 (add-hook 'after-init-hook 'em-keymaps-mode)
 (em-keymaps-mode 1)
