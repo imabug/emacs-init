@@ -116,10 +116,11 @@
 
 ;; Install use-package
 (straight-use-package 'use-package)
-(setq use-package-verbose t
-      load-prefer-newer t
+(setq load-prefer-newer t
+      straight-use-package-by-default t
+      use-package-always-defer t
       use-package-always-ensure t
-      use-package-always-defer t)
+      use-package-verbose t)
 (use-package auto-compile
   :straight t
   :config
@@ -434,6 +435,20 @@
   (goto-char (point-max)))
 
 ;; Languages
+;; Markdown mode
+(use-package markdown-mode
+  :straight t
+  :mode
+  (("README\\.md\\'" . gfm-mode)
+   ("\\.\\(?:md\\|markdown\\|mkd\\|mdown\\|mkdn\\|mdwn\\)\\'" . markdown-mode))
+  :init
+  (setq markdown-command "multimarkdown"
+        markdown-enable-math t
+        markdown-enable-wiki-links t
+        markdown-header-scaling t
+        markdown-gfm-uppercase-checkbox t))
+(add-hook 'markdown-mode-hook 'visual-line-mode)
+
 ;; PHP
 (use-package php-mode
   :straight t
