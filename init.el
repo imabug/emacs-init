@@ -118,24 +118,12 @@
 (straight-use-package 'use-package)
 (setq load-prefer-newer t
       straight-use-package-by-default t
-      use-package-always-defer t
-      use-package-always-ensure t
       use-package-verbose t)
 (use-package auto-compile
   :straight t
   :config
   (auto-compile-on-load-mode)
   (auto-compile-on-save-mode))
-(use-package auto-package-update
-  :straight t
-  :if (not(daemonp))
-  :custom
-  (auto-package-update-interval 7)
-  (auto-package-update-prompt-before-update t)
-  (auto-package-update-delete-old-versions t)
-  (auto-package-update-hide-results t)
-  :config
-  (auto-package-update-maybe))
 (use-package diminish
   :straight t)
 
