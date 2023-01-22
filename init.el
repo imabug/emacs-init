@@ -285,7 +285,9 @@
                      (thing-at-point 'line)))
     (cond
      ;; variable
-     ((string-match (rx (or "private" "protected" "public" "var") (1+ " ") (group "$" (1+ alnum))) line)
+     ((string-match (rx (or "private" "protected" "public" "var")
+                        (1+ " ")
+                        (group "$" (1+ alnum))) line)
       (let ((var-name (match-string 1 line))
             (type ""))
         ;; try to guess the type from the constructor
