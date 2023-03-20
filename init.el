@@ -52,8 +52,13 @@
 ;; Set up some fonts
 (defvar em/default-font-size 120)
 (defvar em/default-variable-font-size 120)
-(set-face-attribute 'default nil :font "Fira Code" :height em/default-font-size)
-(set-face-attribute 'fixed-pitch nil :font "Fira Code" :height em/default-font-size)
+(add-to-list 'default-frame-alist '(font . "Fira Code"))
+(set-face-attribute 'default nil
+                    :font "Fira Code"
+                    :height em/default-font-size)
+(set-face-attribute 'fixed-pitch nil
+                    :font "Fira Code"
+                    :height em/default-font-size)
 (set-face-attribute 'variable-pitch nil
                     :font "Cantarell"
                     :height em/default-variable-font-size
