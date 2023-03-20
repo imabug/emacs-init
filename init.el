@@ -652,16 +652,22 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(column-number-mode t)
+ '(display-time-mode t)
+ '(global-display-line-numbers-mode t)
+ '(menu-bar-mode nil)
  '(package-selected-packages
    '(company-math company-auctex web-mode company-php ac-php php-mode which-key smartparens rainbow-delimiters helm-org helm company magit org-journal diminish auto-package-update auto-compile use-package))
  '(spice-output-local "Gnucap")
  '(spice-simulator "Gnucap")
- '(spice-waveform-viewer "Gwave"))
+ '(spice-waveform-viewer "Gwave")
+ '(tool-bar-mode nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(default ((t (:family "Fira Code" :foundry "CTDB" :slant normal :weight normal :height 98 :width normal))))
  '(org-agenda-structure ((t (:background "#1B324B" :foreground "#BBF0EF" :box nil :weight normal))))
  '(org-done ((t (:foreground "#BBF0EF" :box nil :weight bold))))
  '(org-todo ((t (:foreground "#FF7DBB" :box nil :weight bold)))))
