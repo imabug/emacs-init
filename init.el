@@ -50,8 +50,8 @@
   (add-hook mode (lambda () (display-line-numbers-mode 0))))
 
 ;; Set up some fonts
-(defvar em/default-font-size 120)
-(defvar em/default-variable-font-size 120)
+(defvar em/default-font-size 110)
+(defvar em/default-variable-font-size 110)
 (add-to-list 'default-frame-alist '(font . "Fira Code"))
 (set-face-attribute 'default nil
                     :font "Fira Code"
