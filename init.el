@@ -132,7 +132,10 @@
 (use-package diminish
   :straight t)
 
-(require 'iedit)
+(straight-use-package 'org)
+
+(use-package iedit
+	     :straight t)
 (defun iedit-dwim (arg)
   "Start iedit but use \\[narrow-to-defun] to limit its scope."
   (interactive "P")
@@ -353,7 +356,7 @@
       magit-define-global-key-bindings t)
 
 ;; Company
-(straight-use-package '(company :type built-in))
+(straight-use-package 'company)
 (setq company-backends '(company-capf
                          company-dabbrev-code
                          company-keywords)
@@ -434,7 +437,6 @@
   '(add-hook 'flycheck-mode-hook 'flycheck-color-mode-line-mode))
 
 ;; Org mode
-(straight-use-package '(org :type built-in))
 (setq org-directory "~/org/"
       org-agenda-files (list "~/org/todo.org")
       org-default-notes-file "~/org/notes.org"
@@ -506,9 +508,28 @@
         markdown-gfm-uppercase-checkbox t))
 (add-hook 'markdown-mode-hook 'visual-line-mode)
 
+;; LSP-mode
+(use-package lsp-mode
+  :straight t
+  :init (setq lsp-keymap-prefix "C-c l")
+  :hook (
+         (php-mode . lsp-deferred)
+         (lsp . lsp-enable-which-key-integrations))
+  :commands lsp lsp-deferred)
+(use-package lsp-ui
+  :commands lsp-ui-mode)
+(use-package helm-lsp
+  :commands helm-lsp-workspace-symbol)
+
 ;; PHP
 (use-package php-mode
   :straight t
+  :hook (
+         (php-mode . 'php-enable-psr2-coding-style)
+         (php-mode . 'php-enable-default-coding-style)
+         (php-mode . #'php-align-setup)
+         (php-mode . 'em/php-mode-setup)
+         )
   :config
   (setq php-mode-coding-style 'psr2))
 (use-package ac-php
@@ -523,24 +544,21 @@
 (defun em/php-mode-setup ()
   "My PHP-mode hook."
   (require 'flycheck-phpstan)
-  (flycheck-mode t))
+  (flycheck-mode t)
+  (lsp-deferred))
 (add-to-list 'auto-mode-alist '("\\.php\\'" . php-mode))
-(add-hook 'php-mode-hook 'php-enable-psr2-coding-style)
-(add-hook 'php-mode-hook 'php-enable-default-coding-style)
-(add-hook 'php-mode-hook #'php-align-setup)
-(add-hook 'php-mode-hook 'em/php-mode-setup)
-(add-hook 'php-mode-hook
-          #'(lambda ()
-             (company-mode t)
-             (require 'company-php)
-             (set (make-local-variable 'company-backends)
-                  '((company-ac-php-backend company-dabbrev-code)
-                    company-capf company-files))
-             (define-key php-mode-map (kbd "M-]")
-               'ac-php-find-symbol-at-point)
-             (define-key php-mode-map (kbd "M-[")
-               'ac-php-location-stack-back)))
 (with-eval-after-load 'php-mode
+  (add-hook 'php-mode-hook
+            #'(lambda ()
+                (company-mode t)
+                (require 'company-php)
+                (set (make-local-variable 'company-backends)
+                     '((company-ac-php-backend company-dabbrev-code)
+                       company-capf company-files))
+                (define-key php-mode-map (kbd "M-]")
+                  'ac-php-find-symbol-at-point)
+                (define-key php-mode-map (kbd "M-[")
+                  'ac-php-location-stack-back)))
   (define-key php-mode-map (kbd "C-c C--") 'php-current-class)
   (define-key php-mode-map (kbd "C-c C-=") 'php-current-namespace))
 
@@ -570,7 +588,7 @@
         web-mode-code-indent-offset 2))
 
 ;; LaTeX
-(require 'tex-site)
+;; (require 'tex-site)
 (setq TeX-auto-save t
       TeX-parse-self t
       TeX-PDF-mode t
@@ -661,7 +679,8 @@
  '(spice-output-local "Gnucap")
  '(spice-simulator "Gnucap")
  '(spice-waveform-viewer "Gwave")
- '(tool-bar-mode nil))
+ '(tool-bar-mode nil)
+ '(warning-suppress-types '((comp) (comp))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
