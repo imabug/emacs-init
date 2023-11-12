@@ -243,6 +243,7 @@
 ;;; Some config borrowed from https://github.com/Fuco1/.emacs.d/blob/master/files/smartparens.el
 ;;; lisp modes
 (require 'smartparens-config)
+
 (sp-with-modes sp--lisp-modes
   (sp-local-pair "(" nil
                  :wrap "C-("
@@ -349,7 +350,7 @@
   (projectile-mode +1))
 
 ;; Magit
-(require 'magit)
+(straight-use-package 'magit)
 (setq magit-credential-cache-daemon-socket nil
       magit-refresh-status-buffer nil
       magit-auto-revert-mode t
