@@ -105,7 +105,6 @@
 (global-set-key [mouse-10] 'list-buffers)
 
 ;; Bootstrap code for straight.el
-(setq straight-use-package-by-default t)
 (defvar bootstrap-version)
 (let ((bootstrap-file
        (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
@@ -124,6 +123,10 @@
 (setq load-prefer-newer t
       straight-use-package-by-default t
       use-package-verbose t)
+(use-package straight
+  :custom (straight-use-package-by-default t
+                                           straight-default-vc 'git))
+
 (use-package auto-compile
   :straight t
   :config
