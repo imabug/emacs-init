@@ -604,19 +604,19 @@
 ;;         TeX-parse-self t
 ;;         TeX-PDF-mode t
 ;;         TeX-master nil))
-(use-package reftex
-  :straight t
-  :config
-  (setq reftex-plug-into-AUCTeX t))
-(add-hook 'LaTeX-mode-hook 'auto-fill-mode)
-(add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
-(add-hook 'LaTeX-mode-hook 'turn-on-reftex)
-(add-hook 'LaTeX-mode-hook #'company-mode)
+;(use-package reftex
+;  :straight t
+;  :config
+;  (setq reftex-plug-into-AUCTeX t))
+;(add-hook 'LaTeX-mode-hook 'auto-fill-mode)
+;(add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
+;(add-hook 'LaTeX-mode-hook 'turn-on-reftex)
+;(add-hook 'LaTeX-mode-hook #'company-mode)
 
-(use-package company-auctex
-  :straight t
-  :config
-  (company-auctex-init))
+;(use-package company-auctex
+;  :straight t
+;  :config
+;  (company-auctex-init))
 
 (use-package company-math
   :straight t)
