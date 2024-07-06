@@ -25,24 +25,24 @@
 (setq display-time-day-and-date t
       display-time-24hr-format t
       display-time-default-load-average nil)    ; Display time in the modeline
-(display-time-mode 1)
-(column-number-mode 1)                          ; Show column numbers
-(show-paren-mode 1)
+(display-time-mode)
+(column-number-mode)                            ; Show column numbers
+(show-paren-mode)
 (setq electric-pair-preserve-balance t
       electric-pair-delete-adjacent-pairs t)
-(electric-pair-mode 1)
-(recentf-mode 1)                                ; Remember recently edited files
+(electric-pair-mode)
+(recentf-mode)                                  ; Remember recently edited files
 (setq initial-major-mode 'text-mode)
 (add-hook 'text-mode-hook 'turn-on-visual-line-mode)
 (add-hook 'text-mode-hook 'auto-fill-mode)
 (setq-default tab-always-indent t
 	          indent-tabs-mode nil
-	          tab-width 4)                          ; Set tab behaviour
+	          tab-width 4)                      ; Set tab behaviour
 (setq-default require-final-newline t
               use-short-answers t)
 (prefer-coding-system 'utf-8)
-(global-auto-revert-mode t)
-(global-display-line-numbers-mode t)
+(global-auto-revert-mode)
+(global-display-line-numbers-mode)
 ;; Disable line numbers for some modes
 (dolist (mode '(org-mode-hook
 		        term-mode-hook
@@ -92,11 +92,11 @@
 ;;(put 'helm-M-x-input-history                'history-length 50)
 (put 'minibuffer-history                    'history-length 50)
 (put 'kill-ring                             'history-length 50)
-(savehist-mode 1)
+(savehist-mode)
 
 ;; Set a theme
-(setq tron-legacy-theme-vivid-cursor t)
 (load-theme 'tron-legacy t)
+(setq tron-legacy-theme-vivid-cursor t)
 
 ;; Mouse button bindings
 (global-set-key [mouse-2] 'mark-whole-buffer)    ; wheel button
