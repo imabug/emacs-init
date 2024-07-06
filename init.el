@@ -28,6 +28,9 @@
 (display-time-mode 1)
 (column-number-mode 1)                          ; Show column numbers
 (show-paren-mode 1)
+(setq electric-pair-preserve-balance t
+      electric-pair-delete-adjacent-pairs t)
+(electric-pair-mode 1)
 (recentf-mode 1)                                ; Remember recently edited files
 (setq initial-major-mode 'text-mode)
 (add-hook 'text-mode-hook 'turn-on-visual-line-mode)
@@ -244,10 +247,11 @@
 ;; Flycheck
 (use-package flycheck
   :straight (:type built-in)
-  :demand t
+  :ensure t
   :config
   (setq flycheck-idle-change-delay 1
         flycheck-error-list-minimum-level 'warning)
+  :init (global-flycheck-mode)
   :hook (after-init . global-flycheck-mode))
 
 ;; Org mode
@@ -364,3 +368,4 @@
 (em-keymaps-mode 1)
 
 (provide 'init)
+;;; init.el ends here
