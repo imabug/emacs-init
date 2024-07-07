@@ -27,7 +27,7 @@
       display-time-default-load-average nil)    ; Display time in the modeline
 (display-time-mode)
 (column-number-mode)                            ; Show column numbers
-(show-paren-mode)
+(show-paren-mode)                               ; Highlight matching parens
 (setq electric-pair-preserve-balance t
       electric-pair-delete-adjacent-pairs t)
 (electric-pair-mode)
@@ -221,6 +221,30 @@
   (which-key-setup-side-window-right-bottom)
   (which-key-mode))
 
+;; Helm
+(use-package helm
+  :straight t
+  :defer t
+  :config
+  (setq helm-apropos-fuzzy-match t
+        helm-autoresize-mode t
+        helm-display-buffer-default-height 20
+        helm-lisp-fuzzy-completion t
+        helm-locate-fuzzy-match t
+        helm-M-x-fuzzy-match t
+        helm-M-x-show-short-doc t
+        helm-move-to-line-cycle-in-source t
+        helm-scroll-amount 10
+        helm-split-window-default-side "right")
+  :hook (after-init . helm-mode))
+;; Helm key bindings
+(global-set-key (kbd "C-c h") 'helm-command-prefix)
+(global-unset-key (kbd "C-x c"))
+(global-set-key (kbd "M-x") 'helm-M-x)
+(global-set-key (kbd "M-y") 'helm-show-kill-ring)
+(global-set-key (kbd "C-x b") 'helm-mini)
+(global-set-key (kbd "C-x C-f") 'helm-find-files)
+
 ;; Company for completions
 (use-package company
   :straight (:type built-in)
@@ -375,18 +399,3 @@
 
 (provide 'init)
 ;;; init.el ends here
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(spice-output-local "Gnucap")
- '(spice-simulator "Gnucap")
- '(spice-waveform-viewer "Gwave")
- '(warning-suppress-types '((comp) (comp))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
