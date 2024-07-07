@@ -46,13 +46,6 @@
 (setq abbrev-suggest t
       abbrev-file-name "~/.config/emacs/abbrev_defs") ; Set abbrevs file name
 (read-abbrev-file nil)                          ; Read abbrevs file
-;; Disable line numbers for some modes
-(dolist (mode '(org-mode-hook
-		        term-mode-hook
-		        shell-mode-hook
-		        treemacs-mode-hook
-		        eshell-mode-hook))
-  (add-hook mode (lambda () (display-line-numbers-mode 0))))
 
 ;; Fonts
 (defvar em/default-font-size 110)
