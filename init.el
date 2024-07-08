@@ -91,8 +91,8 @@
 (savehist-mode)
 
 ;; Set a theme
-(load-theme 'tron-legacy t)
-(setq tron-legacy-theme-vivid-cursor t)
+(load-theme 'timu-macos t)
+;; (setq tron-legacy-theme-vivid-cursor t)
 
 ;; Mouse button bindings
 (global-set-key [mouse-2] 'mark-whole-buffer)    ; wheel button
