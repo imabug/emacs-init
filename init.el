@@ -141,8 +141,6 @@
   :config
   (auto-compile-on-load-mode)
   (auto-compile-on-save-mode))
-(use-package diminish
-  :straight t)
 
 ;; Set up for utility packages
 (use-package ligature
