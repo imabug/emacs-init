@@ -224,7 +224,6 @@
 ;; Helm
 (use-package helm
   :straight t
-  :defer t
   :config
   (setq helm-apropos-fuzzy-match t
         helm-autoresize-mode t
