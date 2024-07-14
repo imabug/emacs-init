@@ -45,7 +45,6 @@
 (global-display-line-numbers-mode)
 (setq abbrev-suggest t
       abbrev-file-name "~/.config/emacs/abbrev_defs") ; Set abbrevs file name
-(read-abbrev-file nil)                          ; Read abbrevs file
 (abbrev-mode)                                   ; Enable abbrev mode
 
 ;; Fonts
