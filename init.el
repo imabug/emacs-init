@@ -46,6 +46,7 @@
 (setq abbrev-suggest t
       abbrev-file-name "~/.config/emacs/abbrev_defs") ; Set abbrevs file name
 (read-abbrev-file nil)                          ; Read abbrevs file
+(abbrev-mode)                                   ; Enable abbrev mode
 
 ;; Fonts
 (defvar em/default-font-size 110)
@@ -140,8 +141,6 @@
   :config
   (auto-compile-on-load-mode)
   (auto-compile-on-save-mode))
-(use-package diminish
-  :straight t)
 
 ;; Set up for utility packages
 (use-package ligature
