@@ -287,7 +287,6 @@
 ;; Org mode
 (use-package org
   :straight t
-  :defer t
   :config
   (setq org-directory "~/org/"
         org-agenda-files (list "~/org/todo.org")
@@ -323,9 +322,7 @@
                                  "** %^{Description} %^g %?\n Added: %U")
                                 ("l" "Lab book"
                                  entry (file+olp+datetree "PhD/notes.org")
-                                 "* %U\n %?\n %i\n %a")))
-  :hook (org-mode . #'turn-on-font-lock)
-  :mode ("\\.org\\'"))
+                                 "* %U\n %?\n %i\n %a"))))
 
 ;; Programming modes
 ;; PHP
