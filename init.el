@@ -374,6 +374,17 @@
             (define-key map (kbd "C-c c") #'org-capture)
             (define-key map (kbd "C-c .") #'org-time-stamp)
             (define-key map (kbd "C-c ,") #'org-time-stamp-inactive)
+            ;; EasyPG interface for GPG
+            (define-key map (kbd "C-c M-e l") 'epa-list-keys)
+            (define-key map (kbd "C-c M-e L") 'epa-list-secret-keys)
+            (define-key map (kbd "C-c M-e v") 'epa-verify-region)
+            (define-key map (kbd "C-c M-e V") 'epa-verify-file)
+            (define-key map (kbd "C-c M-e d") 'epa-decrypt-region)
+            (define-key map (kbd "C-c M-e D") 'epa-decrypt-file)
+            (define-key map (kbd "C-c M-e e") 'epa-encrypt-region)
+            (define-key map (kbd "C-c M-e E") 'epa-encrypt-file)
+            (define-key map (kbd "C-c M-e s") 'epa-sign-region)
+            (define-key map (kbd "C-c M-e S") 'epa-sign-file)
             ;; Magit keybindings
             (define-key map (kbd "C-c C-g s") 'magit-status)
             (define-key map (kbd "C-c C-g d") 'magit-diff)
