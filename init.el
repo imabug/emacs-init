@@ -242,13 +242,26 @@
 (global-set-key (kbd "C-x b") 'helm-mini)
 (global-set-key (kbd "C-x C-f") 'helm-find-files)
 
+;; lsp-mode
+(use-package lsp-mode
+  :commands (lsp lsp-deferred)
+  :init
+  (setq lsp-keymap-prefix "C-c l")
+  :config
+  (lsp-enable-which-key-integration t)
+  :hook
+  (php-mode . lsp-deferred))
+(use-package lsp-ui
+  :hook (lsp-mode . lsp-ui-mode))
+
 ;; Company for completions
 (use-package company
   :straight (:type built-in)
   :config
   (setq company-backends '(company-capf
                            company-dabbrev-code
-                           company-keywords)
+                           company-keywords
+                           company-clang)
         company-frontends '(company-pseudo-tooltip-unless-just-one-frontend-with-delay
                             company-preview-frontend
                             company-echo-metadata-frontend)
@@ -260,7 +273,13 @@
         company-tooltip-align-annotations t
         company-require-match nil
         company-selection-wrap-around t)
-  :hook (after-init . global-company-mode))
+  :bind
+  (:map company-active-map
+              ("<tab>" . company-complete-selection))
+  (:map lsp-mode-map
+        ("<tab>" . company-indent-or-complete-common))
+  :hook (after-init . global-company-mode)
+  :custom(company-minimum-prefix-length 1))
 
 ;; Magit
 (use-package magit
@@ -322,12 +341,21 @@
                                  "* %U\n %?\n %i\n %a"))))
 
 ;; Programming modes
+;; Fish shell
+(use-package fish-mode
+  :straight t
+  :config
+  (setq fish-enable-auto-indent t))
 ;; PHP
 (use-package php-mode
   :straight t
   :defer t
-  :config (setq php-mode-coding-style 'psr2)
-  :mode ("\\.php\\'"))
+  :config
+  (setq php-mode-coding-style 'psr2)
+  (custom-set-variables '(lsp-phpactor-path "~/bin/phpactor"))
+  :mode ("\\.php\\'")
+  :hook
+  (php-mode . lsp-deferred))
 (use-package company-php
   :straight t
   :defer t
