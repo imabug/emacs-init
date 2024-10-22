@@ -243,16 +243,16 @@
 (global-set-key (kbd "C-x C-f") 'helm-find-files)
 
 ;; lsp-mode
-(use-package lsp-mode
-  :commands (lsp lsp-deferred)
-  :init
-  (setq lsp-keymap-prefix "C-c l")
-  :config
-  (lsp-enable-which-key-integration t)
-  :hook
-  (php-mode . lsp-deferred))
-(use-package lsp-ui
-  :hook (lsp-mode . lsp-ui-mode))
+;; (use-package lsp-mode
+;;   :commands (lsp lsp-deferred)
+;;   :init
+;;   (setq lsp-keymap-prefix "C-c l")
+;;   :config
+;;   (lsp-enable-which-key-integration t)
+;;   :hook
+;;   (php-mode . lsp-deferred))
+;; (use-package lsp-ui
+;;   :hook (lsp-mode . lsp-ui-mode))
 
 ;; Company for completions
 (use-package company
@@ -341,11 +341,21 @@
                                  "* %U\n %?\n %i\n %a"))))
 
 ;; Programming modes
+;; Markdown mode
+(use-package markdown-mode
+  :straight t
+  :ensure t
+  :config
+  (setq markdown-enable-wiki-links t
+        markdown-enable-math t)
+  :init (setq markdown-command "multimarkdown"))
+
 ;; Fish shell
 (use-package fish-mode
   :straight t
   :config
   (setq fish-enable-auto-indent t))
+
 ;; PHP
 (use-package php-mode
   :straight t
@@ -354,8 +364,9 @@
   (setq php-mode-coding-style 'psr2)
   (custom-set-variables '(lsp-phpactor-path "~/bin/phpactor"))
   :mode ("\\.php\\'")
-  :hook
-  (php-mode . lsp-deferred))
+  ;;:hook
+  ;;  (php-mode . lsp-deferred)
+  )
 (use-package company-php
   :straight t
   :defer t
