@@ -242,18 +242,6 @@
 (global-set-key (kbd "C-x b") 'helm-mini)
 (global-set-key (kbd "C-x C-f") 'helm-find-files)
 
-;; lsp-mode
-;; (use-package lsp-mode
-;;   :commands (lsp lsp-deferred)
-;;   :init
-;;   (setq lsp-keymap-prefix "C-c l")
-;;   :config
-;;   (lsp-enable-which-key-integration t)
-;;   :hook
-;;   (php-mode . lsp-deferred))
-;; (use-package lsp-ui
-;;   :hook (lsp-mode . lsp-ui-mode))
-
 ;; Company for completions
 (use-package company
   :straight (:type built-in)
@@ -276,8 +264,6 @@
   :bind
   (:map company-active-map
               ("<tab>" . company-complete-selection))
-  (:map lsp-mode-map
-        ("<tab>" . company-indent-or-complete-common))
   :hook (after-init . global-company-mode)
   :custom(company-minimum-prefix-length 1))
 
@@ -341,6 +327,17 @@
                                  "* %U\n %?\n %i\n %a"))))
 
 ;; Programming modes
+;; eglot
+(use-package eglot
+  :straight (:type built-in)
+  :config
+  (setq eglot-autoshutdown t
+        lsp-phpactor-path "phpactor")
+  :hook (php-mode .eglot-ensure))
+(with-eval-after-load 'eglot
+  (add-to-list 'eglot-server-programs
+               '(php-mode . ("phpactor" "language-server"))))
+
 ;; Markdown mode
 (use-package markdown-mode
   :straight t
@@ -362,10 +359,7 @@
   :defer t
   :config
   (setq php-mode-coding-style 'psr2)
-  (custom-set-variables '(lsp-phpactor-path "~/bin/phpactor"))
   :mode ("\\.php\\'")
-  ;;:hook
-  ;;  (php-mode . lsp-deferred)
   )
 (use-package company-php
   :straight t
