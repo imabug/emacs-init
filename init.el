@@ -2,25 +2,13 @@
 ;;; Commentary:
 
 ;;; Code:
-;; Path settings
-(add-to-list 'load-path "~/.config/emacs/elisp")
-(add-to-list 'load-path "/usr/share/emacs/site-lisp")
-(add-to-list 'custom-theme-load-path "~/.config/emacs/themes")
-
 ;; User info
 (setq user-full-name "Eugene Mah"
       user-mail-address "eugenemah@gmail.com"
       user-login-name "eugenem")
 (setenv "SHELL" "/bin/fish")
 
-;; Start emacs frame maximized
-(add-to-list 'default-frame-alist '(fullscreen . maximized))
-
 ;; General settings
-(setq inhibit-startup-screen t)                 ; Don't show the startup screen
-(tool-bar-mode -1)                              ; Don't show the tool bar
-(menu-bar-mode -1)                              ; Don't show the menu bar
-(setq visible-bell t)                           ; Enable visible bell
 (setq calendar-week-start-day 1)                ; Calendar week starts Monday
 (setq display-time-day-and-date t
       display-time-24hr-format t
@@ -124,6 +112,11 @@
 (use-package straight
   :custom
   (straight-use-package-by-default t))
+
+;; Delete selected text upon insertion
+(use-package delsel
+  :ensure nil
+  :hook (after-init . delete-selection-mode))
 
 ;; Use doom modeline
 (use-package doom-modeline
