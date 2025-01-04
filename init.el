@@ -108,7 +108,7 @@
   (load bootstrap-file nil 'nomessage))
 
 ;; Install use-package
-(straight-use-package 'use-package)
+;;(straight-use-package 'use-package)
 (use-package straight
   :custom
   (straight-use-package-by-default t))
@@ -281,7 +281,7 @@
 
 ;; Org mode
 (use-package org
-  :straight t
+  :straight (:type built-in)
   :config
   (setq org-directory "~/org/"
         org-agenda-files (list "~/org/todo.org")
