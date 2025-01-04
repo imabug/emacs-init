@@ -115,6 +115,7 @@
 
 ;; Delete selected text upon insertion
 (use-package delsel
+  :straight (:type built-in)
   :ensure nil
   :hook (after-init . delete-selection-mode))
 
