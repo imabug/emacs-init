@@ -322,15 +322,12 @@
 
 ;; Programming modes
 ;; eglot
-(use-package eglot
-  :straight (:type built-in)
-  :config
-  (setq eglot-autoshutdown t
-        lsp-phpactor-path "phpactor")
-  :hook (php-mode .eglot-ensure))
+(setq eglot-autoshutdown t
+      lsp-phpactor-path "phpactor")
 (with-eval-after-load 'eglot
   (add-to-list 'eglot-server-programs
                '(php-mode . ("phpactor" "language-server"))))
+(add-hook 'php-mode-hook 'eglot-ensure)
 
 ;; Markdown mode
 (use-package markdown-mode
