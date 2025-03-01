@@ -1,16 +1,20 @@
 ;;; early-init.el --- -*- lexical-binding:t -*-
 
 ;;; Code:
+;; Path settings
+(add-to-list 'load-path "~/.config/emacs/elisp")
+(add-to-list 'load-path "/usr/share/emacs/site-lisp")
+(add-to-list 'custom-theme-load-path "~/.config/emacs/themes")
+
+;; Set a theme
+(load-theme 'timu-macos t)
+;; (setq tron-legacy-theme-vivid-cursor t)
+
 ;; Don't enable package.el
 (setq package-enable-at-startup nil)
 
 ;; Don't ask if emacs should follow symlinks
 (setq vc-follow-symlinks t)
-
-;; Path settings
-(add-to-list 'load-path "~/.config/emacs/elisp")
-(add-to-list 'load-path "/usr/share/emacs/site-lisp")
-(add-to-list 'custom-theme-load-path "~/.config/emacs/themes")
 
 ;; Put custom configurations added via M-x customize
 ;; into its own file

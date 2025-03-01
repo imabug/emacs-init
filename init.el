@@ -78,10 +78,6 @@
 (put 'kill-ring                             'history-length 50)
 (savehist-mode)
 
-;; Set a theme
-(load-theme 'timu-macos t)
-;; (setq tron-legacy-theme-vivid-cursor t)
-
 ;; Mouse button bindings
 (global-set-key [mouse-2] 'mark-whole-buffer)    ; wheel button
 (global-set-key [mouse-6] 'backward-word)        ; thumb wheel up
