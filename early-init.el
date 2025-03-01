@@ -10,12 +10,6 @@
 (load-theme 'timu-macos t)
 ;; (setq tron-legacy-theme-vivid-cursor t)
 
-;; Don't enable package.el
-(setq package-enable-at-startup nil)
-
-;; Don't ask if emacs should follow symlinks
-(setq vc-follow-symlinks t)
-
 ;; Put custom configurations added via M-x customize
 ;; into its own file
 (setq custom-file (locate-user-emacs-file "custom.el"))
@@ -28,6 +22,12 @@
 (setq visible-bell t)                           ; Enable visible bell
 (tool-bar-mode -1)                              ; Don't show the tool bar
 (menu-bar-mode -1)                              ; Don't show the menu bar
+
+;; Don't enable package.el
+(setq package-enable-at-startup nil)
+
+;; Don't ask if emacs should follow symlinks
+(setq vc-follow-symlinks t)
 
 (provide 'early-init)
 ;;; early-init ends here
