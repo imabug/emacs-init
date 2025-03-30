@@ -317,13 +317,60 @@
                                  "* %U\n %?\n %i\n %a"))))
 
 ;; Programming modes
-;; eglot
-(setq eglot-autoshutdown t
-      lsp-phpactor-path "phpactor")
-(with-eval-after-load 'eglot
-  (add-to-list 'eglot-server-programs
-               '(php-mode . ("phpactor" "language-server"))))
-(add-hook 'php-mode-hook 'eglot-ensure)
+;; tree-sitter
+(setq treesit-language-source-alist
+      '((arduino "https://github.com/tree-sitter-grammars/tree-sitter-arduino")
+        (bash "https://github.com/tree-sitter/tree-sitter-bash")
+        (c "https://github.com/tree-sitter/tree-sitter-c")
+        (cmake "https://github.com/uyha/tree-sitter-cmake")
+        (cpp "https://github.com/tree-sitter/tree-sitter-cpp")
+        (css "https://github.com/tree-sitter/tree-sitter-css")
+        (elisp "https://github.com/Wilfred/tree-sitter-elisp")
+        (go "https://github.com/tree-sitter/tree-sitter-go")
+        (html "https://github.com/tree-sitter/tree-sitter-html")
+        (java "https://github.com/tree-sitter/tree-sitter-java")
+        (javascript "https://github.com/tree-sitter/tree-sitter-javascript" "master" "src")
+        (jsdoc "https://github.com/tree-sitter/tree-sitter-jsdoc")
+        (json "https://github.com/tree-sitter/tree-sitter-json")
+        (julia "https://github.com/tree-sitter/tree-sitter-julia")
+        (make "https://github.com/alemuller/tree-sitter-make")
+        (markdown "https://github.com/ikatyang/tree-sitter-markdown")
+        (php "https://github.com/tree-sitter/tree-sitter-php" "master" "php/src")
+        (phpdoc "https://github.com/claytonrcarter/tree-sitter-phpdoc")
+        (python "https://github.com/tree-sitter/tree-sitter-python")
+        (rust "https://github.com/tree-sitter/tree-sitter-rust")
+        (toml "https://github.com/tree-sitter/tree-sitter-toml")
+        (tsx "https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src")
+        (typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src")
+        (yaml "https://github.com/ikatyang/tree-sitter-yaml")))
+
+(setq major-mode-remap-alist
+      '((bash-mode . bash-ts-mode)
+        (c-mode . c-ts-mode)
+        (cmake-mode . cmake-ts-mode)
+        (cpp-mode . cpp-ts-mode)
+        (css-mode . css-ts-mode)
+        (emacs-lisp-mode . elisp-ts-mode)
+        (go-mode . go-ts-mode)
+        (java-mode . java-ts-mode)
+        (javascript-mode . javascript-ts-mode)
+        (json-mode . json-ts-mode)
+        (markdown-mode . markdown-ts-mode)
+        (php-mode . php-ts-mode)
+        (python-mode . python-ts-mode)
+        (rust-mode . rust-ts-mode)
+        (toml-mode . toml-ts-mode)
+        (yaml-mode . yaml-ts-mode)))
+
+(setq treesit-load-name-override-list '((gomod "libtree-sitter-go")))
+
+;; ;; eglot
+;; (setq eglot-autoshutdown t
+;;       lsp-phpactor-path "phpactor")
+;; (with-eval-after-load 'eglot
+;;   (add-to-list 'eglot-server-programs
+;;                '(php-mode . ("phpactor" "language-server"))))
+;; (add-hook 'php-mode-hook 'eglot-ensure)
 
 ;; Markdown mode
 (use-package markdown-mode
