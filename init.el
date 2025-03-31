@@ -350,7 +350,6 @@
         (cmake-mode . cmake-ts-mode)
         (cpp-mode . cpp-ts-mode)
         (css-mode . css-ts-mode)
-        (emacs-lisp-mode . elisp-ts-mode)
         (go-mode . go-ts-mode)
         (java-mode . java-ts-mode)
         (javascript-mode . javascript-ts-mode)
