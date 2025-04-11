@@ -391,8 +391,7 @@
   :defer t
   :custom
   (php-mode-coding-style 'psr2)
-  :mode ("\\.php\\'")
-  )
+  :mode ("\\.php\\'"))
 (use-package company-php
   :straight t
   :defer t
