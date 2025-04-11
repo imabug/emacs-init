@@ -12,22 +12,22 @@
 
 ;; Put custom configurations added via M-x customize
 ;; into its own file
-(setq custom-file (locate-user-emacs-file "custom.el"))
+(setopt custom-file (locate-user-emacs-file "custom.el"))
 (load custom-file :no-error-if-file-is-missing)
 
 ;; Start emacs frame maximized
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
 
-(setq inhibit-startup-screen t)                 ; Don't show the startup screen
-(setq visible-bell t)                           ; Enable visible bell
+(setopt inhibit-startup-screen t)                 ; Don't show the startup screen
+(setopt visible-bell t)                           ; Enable visible bell
 (tool-bar-mode -1)                              ; Don't show the tool bar
 (menu-bar-mode -1)                              ; Don't show the menu bar
 
 ;; Don't enable package.el
-(setq package-enable-at-startup nil)
+(setopt package-enable-at-startup nil)
 
 ;; Don't ask if emacs should follow symlinks
-(setq vc-follow-symlinks t)
+(setopt vc-follow-symlinks t)
 
 (provide 'early-init)
 ;;; early-init ends here
