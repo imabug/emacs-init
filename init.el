@@ -254,8 +254,7 @@
   :bind
   (:map company-active-map
               ("<tab>" . company-complete-selection))
-  :hook (after-init . global-company-mode)
-  :custom(company-minimum-prefix-length 1))
+  :hook (after-init . global-company-mode))
 
 ;; Magit
 (use-package magit
