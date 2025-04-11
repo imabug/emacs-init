@@ -10,30 +10,33 @@
 
 ;; General settings
 (setopt calendar-week-start-day 1)                ; Calendar week starts Monday
+;; Display time in the modeline
 (setopt display-time-day-and-date t
       display-time-24hr-format t
-      display-time-default-load-average nil)    ; Display time in the modeline
-(display-time-mode)
-(column-number-mode)                            ; Show column numbers
-(show-paren-mode)                               ; Highlight matching parens
+      display-time-default-load-average nil)
 (setopt electric-pair-preserve-balance t
       electric-pair-delete-adjacent-pairs t)
-(electric-pair-mode)
-(recentf-mode)                                  ; Remember recently edited files
 (setopt initial-major-mode 'text-mode)
-(add-hook 'text-mode-hook 'turn-on-visual-line-mode)
-(add-hook 'text-mode-hook 'auto-fill-mode)
+;; Set tab behaviour
 (setopt tab-always-indent t
-	          indent-tabs-mode nil
-	          tab-width 4)                      ; Set tab behaviour
+	    indent-tabs-mode nil
+	    tab-width 4)
 (setopt require-final-newline t
-              use-short-answers t)
-(prefer-coding-system 'utf-8)
+        use-short-answers t)
+(setopt abbrev-suggest t
+        abbrev-file-name "~/.config/emacs/abbrev_defs") ; Set abbrevs file name
+;; Activate modes
+(electric-pair-mode)
+(display-time-mode)
+(abbrev-mode)                                   ; Enable abbrev mode
+(column-number-mode)                            ; Show column numbers
+(show-paren-mode)                               ; Highlight matching parens
+(recentf-mode)                                  ; Remember recently edited files
 (global-auto-revert-mode)
 (global-display-line-numbers-mode)
-(setopt abbrev-suggest t
-      abbrev-file-name "~/.config/emacs/abbrev_defs") ; Set abbrevs file name
-(abbrev-mode)                                   ; Enable abbrev mode
+(prefer-coding-system 'utf-8)
+(add-hook 'text-mode-hook 'turn-on-visual-line-mode)
+(add-hook 'text-mode-hook 'auto-fill-mode)
 
 ;; Fonts
 (defvar em/default-font-size 110)
@@ -52,21 +55,21 @@
 
 ;; Backup settings
 (setopt backup-directory-alist '(("." . "~/.config/emacs/backups"))
-      delete-old-versions t
-      version-control t
-      vc-make-backup-files t
-      auto-save-timeout 120
-      auto-save-file-name-transforms '((".*" "~/.config/emacs/auto-save-list" t)))
+        delete-old-versions t
+        version-control t
+        vc-make-backup-files t
+        auto-save-timeout 120
+        auto-save-file-name-transforms '((".*" "~/.config/emacs/auto-save-list" t)))
 
 ;; History settings
 (setopt savehist-file "~/.config/emacs/savehist")
 (setopt history-delete-duplicates t
-      history-length 50
-      history-delete-duplicates t
-      savehist-save-minibuffer-history t
-      savehist-additional-variables '(kill-ring
-                                      search-ring
-                                      regexp-search-ring))
+        history-length 50
+        history-delete-duplicates t
+        savehist-save-minibuffer-history t
+        savehist-additional-variables '(kill-ring
+                                        search-ring
+                                        regexp-search-ring))
 (put 'savehist-minibuffer-history-variables 'history-length 50)
 (put 'extended-command-history              'history-length 50)
 (put 'command-history                       'history-length 50)
