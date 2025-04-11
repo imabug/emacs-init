@@ -3,35 +3,35 @@
 
 ;;; Code:
 ;; User info
-(setq user-full-name "Eugene Mah"
+(setopt user-full-name "Eugene Mah"
       user-mail-address "eugenemah@gmail.com"
       user-login-name "eugenem")
 (setenv "SHELL" "/bin/fish")
 
 ;; General settings
-(setq calendar-week-start-day 1)                ; Calendar week starts Monday
-(setq display-time-day-and-date t
+(setopt calendar-week-start-day 1)                ; Calendar week starts Monday
+(setopt display-time-day-and-date t
       display-time-24hr-format t
       display-time-default-load-average nil)    ; Display time in the modeline
 (display-time-mode)
 (column-number-mode)                            ; Show column numbers
 (show-paren-mode)                               ; Highlight matching parens
-(setq electric-pair-preserve-balance t
+(setopt electric-pair-preserve-balance t
       electric-pair-delete-adjacent-pairs t)
 (electric-pair-mode)
 (recentf-mode)                                  ; Remember recently edited files
-(setq initial-major-mode 'text-mode)
+(setopt initial-major-mode 'text-mode)
 (add-hook 'text-mode-hook 'turn-on-visual-line-mode)
 (add-hook 'text-mode-hook 'auto-fill-mode)
-(setq-default tab-always-indent t
+(setopt tab-always-indent t
 	          indent-tabs-mode nil
 	          tab-width 4)                      ; Set tab behaviour
-(setq-default require-final-newline t
+(setopt require-final-newline t
               use-short-answers t)
 (prefer-coding-system 'utf-8)
 (global-auto-revert-mode)
 (global-display-line-numbers-mode)
-(setq abbrev-suggest t
+(setopt abbrev-suggest t
       abbrev-file-name "~/.config/emacs/abbrev_defs") ; Set abbrevs file name
 (abbrev-mode)                                   ; Enable abbrev mode
 
@@ -51,7 +51,7 @@
 	                :weight 'regular)
 
 ;; Backup settings
-(setq backup-directory-alist '(("." . "~/.config/emacs/backups"))
+(setopt backup-directory-alist '(("." . "~/.config/emacs/backups"))
       delete-old-versions t
       version-control t
       vc-make-backup-files t
@@ -59,8 +59,8 @@
       auto-save-file-name-transforms '((".*" "~/.config/emacs/auto-save-list" t)))
 
 ;; History settings
-(setq savehist-file "~/.config/emacs/savehist")
-(setq history-delete-duplicates t
+(setopt savehist-file "~/.config/emacs/savehist")
+(setopt history-delete-duplicates t
       history-length 50
       history-delete-duplicates t
       savehist-save-minibuffer-history t
