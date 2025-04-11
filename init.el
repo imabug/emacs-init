@@ -119,10 +119,10 @@
 (use-package doom-modeline
   :straight t
   :ensure t
-  :config
-  (setq doom-modeline-time-icon nil
-        doom-modeline-time-live-icon nil
-        doom-modeline-column-zero-based nil)
+  :custom
+  (doom-modeline-time-icon nil)
+  (doom-modeline-time-live-icon nil)
+  (doom-modeline-column-zero-based nil)
   :hook (after-init . doom-modeline-mode))
 
 (use-package auto-compile
@@ -212,17 +212,17 @@
 ;; Helm
 (use-package helm
   :straight t
-  :config
-  (setq helm-apropos-fuzzy-match t
-        helm-autoresize-mode t
-        helm-display-buffer-default-height 20
-        helm-lisp-fuzzy-completion t
-        helm-locate-fuzzy-match t
-        helm-M-x-fuzzy-match t
-        helm-M-x-show-short-doc t
-        helm-move-to-line-cycle-in-source t
-        helm-scroll-amount 10
-        helm-split-window-default-side "right")
+  :custom
+  (helm-apropos-fuzzy-match t)
+  (helm-autoresize-mode t)
+  (helm-display-buffer-default-height 20)
+  (helm-lisp-fuzzy-completion t)
+  (helm-locate-fuzzy-match t)
+  (helm-M-x-fuzzy-match t)
+  (helm-M-x-show-short-doc t)
+  (helm-move-to-line-cycle-in-source t)
+  (helm-scroll-amount 10)
+  (helm-split-window-default-side "right")
   :hook (after-init . helm-mode))
 ;; Helm key bindings
 (global-set-key (kbd "C-c h") 'helm-command-prefix)
@@ -235,22 +235,22 @@
 ;; Company for completions
 (use-package company
   :straight (:type built-in)
-  :config
-  (setq company-backends '(company-capf
-                           company-dabbrev-code
-                           company-keywords
-                           company-clang)
-        company-frontends '(company-pseudo-tooltip-unless-just-one-frontend-with-delay
-                            company-preview-frontend
-                            company-echo-metadata-frontend)
-        company-format-margin-function 'company-vscode-dark-icons-margin
-        company-global-modes '(not shell-mode eaf-mode)
-        company-idle-delay 0.1
-        company-minimum-prefix-length 3
-        company-show-numbers t
-        company-tooltip-align-annotations t
-        company-require-match nil
-        company-selection-wrap-around t)
+  :custom
+  (company-backends '(company-capf
+                      company-dabbrev-code
+                      company-keywords
+                      company-clang))
+  (company-frontends '(company-pseudo-tooltip-unless-just-one-frontend-with-delay
+                       company-preview-frontend
+                       company-echo-metadata-frontend))
+  (company-format-margin-function 'company-vscode-dark-icons-margin)
+  (company-global-modes '(not shell-mode eaf-mode))
+  (company-idle-delay 0.1)
+  (company-minimum-prefix-length 3)
+  (company-show-numbers t)
+  (company-tooltip-align-annotations t)
+  (company-require-match nil)
+  (company-selection-wrap-around t)
   :bind
   (:map company-active-map
               ("<tab>" . company-complete-selection))
@@ -260,61 +260,61 @@
 ;; Magit
 (use-package magit
   :straight (:type built-in)
-  :config
-  (setq magit-credential-cache-daemon-socket nil
-        magit-refresh-status-buffer nil
-        magit-auto-revert-mode t
-        magit-define-global-key-bindings t))
+  :custom
+  (magit-credential-cache-daemon-socket nil)
+  (magit-refresh-status-buffer nil)
+  (magit-auto-revert-mode t)
+  (magit-define-global-key-bindings t))
 
 ;; Flycheck
 (use-package flycheck
   :straight (:type built-in)
   :ensure t
-  :config
-  (setq flycheck-idle-change-delay 1
-        flycheck-error-list-minimum-level 'warning)
+  :custom
+  (flycheck-idle-change-delay 1)
+  (flycheck-error-list-minimum-level 'warning)
   :init (global-flycheck-mode)
   :hook (after-init . global-flycheck-mode))
 
 ;; Org mode
 (use-package org
   :straight (:type built-in)
-  :config
-  (setq org-directory "~/org/"
-        org-agenda-files (list "~/org/todo.org")
-        org-default-notes-file "~/org/notes.org"
-        org-archive-location "~/org/archive/"
-        org-enable-github-support t
-        org-enable-journal-support t
-        org-log-done 'time-date
-        org-startup-truncated nil
-        org-use-speed-commands t
-        org-return-follows-link t
-        org-tag-alist '(("WORK" . ?W)
-                        ("home" . ?h)
-                        ("lab" . ?l)
-                        ("research" . ?r)
-                        ("dogs" . ?d)
-                        ("radioclub" . ?C))
-        org-capture-templates '(("t" "Todo"
-                                 entry (file+headline "todo.org" "Tasks")
-                                 "** TODO %?\n %i\n %a")
-                                ("a" "Appointment"
-                                 entry (file+headline "todo.org" "Calendar")
-                                 "** APPT %^{Description} %^g\n %?\n Added: %U")
-                                ("j" "Journal entry"
-                                 plain (function org-journal-find-location)
-                                 "** %(format-time-string org-journal-time-format)%^{Title}\n%i%?"
-                                 :jump-to-captured t :immediate-finish t)
-                                ("n" "Notes"
-                                 entry (file+olp+datetree "notes.org")
-                                 "* %^{Description} %^g %?\n Added: %U")
-                                ("s" "Scractchpad"
-                                 entry (file+olp+datetree "scratchpad.org" "Scratchpad")
-                                 "** %^{Description} %^g %?\n Added: %U")
-                                ("l" "Lab book"
-                                 entry (file+olp+datetree "PhD/notes.org")
-                                 "* %U\n %?\n %i\n %a"))))
+  :custom
+  (org-directory "~/org/")
+  (org-agenda-files (list "~/org/todo.org"))
+  (org-default-notes-file "~/org/notes.org")
+  (org-archive-location "~/org/archive/")
+  (org-enable-github-support t)
+  (org-enable-journal-support t)
+  (org-log-done 'time-date)
+  (org-startup-truncated nil)
+  (org-use-speed-commands t)
+  (org-return-follows-link t)
+  (org-tag-alist '(("WORK" . ?W)
+                   ("home" . ?h)
+                   ("lab" . ?l)
+                   ("research" . ?r)
+                   ("dogs" . ?d)
+                   ("radioclub" . ?C)))
+  (org-capture-templates '(("t" "Todo"
+                            entry (file+headline "todo.org" "Tasks")
+                            "** TODO %?\n %i\n %a")
+                           ("a" "Appointment"
+                            entry (file+headline "todo.org" "Calendar")
+                            "** APPT %^{Description} %^g\n %?\n Added: %U")
+                           ("j" "Journal entry"
+                            plain (function org-journal-find-location)
+                            "** %(format-time-string org-journal-time-format)%^{Title}\n%i%?"
+                            :jump-to-captured t :immediate-finish t)
+                           ("n" "Notes"
+                            entry (file+olp+datetree "notes.org")
+                            "* %^{Description} %^g %?\n Added: %U")
+                           ("s" "Scractchpad"
+                            entry (file+olp+datetree "scratchpad.org" "Scratchpad")
+                            "** %^{Description} %^g %?\n Added: %U")
+                           ("l" "Lab book"
+                            entry (file+olp+datetree "PhD/notes.org")
+                            "* %U\n %?\n %i\n %a"))))
 
 ;; Programming modes
 ;; tree-sitter
@@ -344,7 +344,7 @@
         (typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src")
         (yaml "https://github.com/ikatyang/tree-sitter-yaml")))
 
-(setq major-mode-remap-alist
+(setopt major-mode-remap-alist
       '((bash-mode . bash-ts-mode)
         (c-mode . c-ts-mode)
         (cmake-mode . cmake-ts-mode)
@@ -375,23 +375,23 @@
 (use-package markdown-mode
   :straight t
   :ensure t
-  :config
-  (setq markdown-enable-wiki-links t
-        markdown-enable-math t)
+  :custom
+  (markdown-enable-wiki-links t)
+  (markdown-enable-math t)
   :init (setq markdown-command "multimarkdown"))
 
 ;; Fish shell
 (use-package fish-mode
   :straight t
-  :config
-  (setq fish-enable-auto-indent t))
+  :custom
+  (fish-enable-auto-indent t))
 
 ;; PHP
 (use-package php-mode
   :straight t
   :defer t
-  :config
-  (setq php-mode-coding-style 'psr2)
+  :custom
+  (php-mode-coding-style 'psr2)
   :mode ("\\.php\\'")
   )
 (use-package company-php
