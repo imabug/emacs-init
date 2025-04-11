@@ -10,12 +10,12 @@
 
 ;; General settings
 (setopt calendar-week-start-day 1)                ; Calendar week starts Monday
-;; Display time in the modeline
 (setopt display-time-day-and-date t
-      display-time-24hr-format t
-      display-time-default-load-average nil)
+        display-time-24hr-format t
+        display-time-default-load-average nil)
+;; Electric-pair options
 (setopt electric-pair-preserve-balance t
-      electric-pair-delete-adjacent-pairs t)
+        electric-pair-delete-adjacent-pairs t)
 (setopt initial-major-mode 'text-mode)
 ;; Set tab behaviour
 (setopt tab-always-indent t
@@ -23,11 +23,12 @@
 	    tab-width 4)
 (setopt require-final-newline t
         use-short-answers t)
+;; Abbrev options
 (setopt abbrev-suggest t
         abbrev-file-name "~/.config/emacs/abbrev_defs") ; Set abbrevs file name
 ;; Activate modes
-(electric-pair-mode)
-(display-time-mode)
+(electric-pair-mode)                            ; Enable electric-pair mode
+(display-time-mode)                             ; Display time in the mode line
 (abbrev-mode)                                   ; Enable abbrev mode
 (column-number-mode)                            ; Show column numbers
 (show-paren-mode)                               ; Highlight matching parens
