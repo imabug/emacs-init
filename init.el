@@ -227,14 +227,15 @@
   (helm-move-to-line-cycle-in-source t)
   (helm-scroll-amount 10)
   (helm-split-window-default-side "right")
+  :bind
+  ("C-c h" . helm-command-prefix)
+  ("M-x" . helm-M-x)
+  ("C-x C-f" . helm-find-files)
+  ("M-y" . helm-show-kill-ring)
+  ("C-x b" . helm-mini)
   :hook (after-init . helm-mode))
 ;; Helm key bindings
-(global-set-key (kbd "C-c h") 'helm-command-prefix)
 (global-unset-key (kbd "C-x c"))
-(global-set-key (kbd "M-x") 'helm-M-x)
-(global-set-key (kbd "M-y") 'helm-show-kill-ring)
-(global-set-key (kbd "C-x b") 'helm-mini)
-(global-set-key (kbd "C-x C-f") 'helm-find-files)
 
 ;; Company for completions
 (use-package company
@@ -267,7 +268,20 @@
   (magit-credential-cache-daemon-socket nil)
   (magit-refresh-status-buffer nil)
   (magit-auto-revert-mode t)
-  (magit-define-global-key-bindings t))
+  (magit-define-global-key-bindings t)
+  :bind
+  ("C-c C-g s" . magit-status)
+  ("C-c C-g d" . magit-diff)
+  ("C-c C-g D" . magit-diff-unstaged)
+  ("C-c C-g S" . magit-stage)
+  ("C-c C-g U" . magit-unstage)
+  ("C-c C-g c" . magit-commit)
+  ("C-c C-g p" . magit-push)
+  ("C-c C-g P" . magit-pull)
+  ("C-c C-g f" . magit-fetch)
+  ("C-c C-g l" . magit-log)
+  ("C-c C-g b" . magit-branch)
+  ("C-c C-g t" . magit-tag))
 
 ;; Flycheck
 (use-package flycheck
@@ -381,7 +395,7 @@
   :custom
   (markdown-enable-wiki-links t)
   (markdown-enable-math t)
-  :init (setq markdown-command "multimarkdown"))
+  (markdown-command "multimarkdown"))
 
 ;; Fish shell
 (use-package fish-mode
@@ -453,19 +467,11 @@
             (define-key map (kbd "C-c M-e E") 'epa-encrypt-file)
             (define-key map (kbd "C-c M-e s") 'epa-sign-region)
             (define-key map (kbd "C-c M-e S") 'epa-sign-file)
-            ;; Magit keybindings
-            (define-key map (kbd "C-c C-g s") 'magit-status)
-            (define-key map (kbd "C-c C-g d") 'magit-diff)
-            (define-key map (kbd "C-c C-g S") 'magit-stage)
-            (define-key map (kbd "C-c C-g u") 'magit-unstage)
-            (define-key map (kbd "C-c C-g c") 'magit-commit)
-            (define-key map (kbd "C-c C-g p") 'magit-push)
-            (define-key map (kbd "C-c C-g P") 'magit-pull)
-            (define-key map (kbd "C-c C-g f") 'magit-fetch)
             ;; Other keybindings
             (define-key map (kbd "C-c ;") 'comment-or-uncomment-region)
             (define-key map (kbd "<escape>") 'keyboard-escape-quit)
             (define-key map (kbd "C-c C-a") 'mark-whole-buffer)
+            (define-key map (kbd "C-c C-p") 'mark-paragraph)
             map))
 (add-hook 'after-init-hook 'em-keymaps-mode)
 (em-keymaps-mode 1)
