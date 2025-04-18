@@ -121,7 +121,6 @@
 
 ;; Use doom modeline
 (use-package doom-modeline
-  :straight t
   :ensure t
   :custom
   (doom-modeline-time-icon nil)
@@ -130,14 +129,12 @@
   :hook (after-init . doom-modeline-mode))
 
 (use-package auto-compile
-  :straight t
   :config
   (auto-compile-on-load-mode)
   (auto-compile-on-save-mode))
 
 ;; Set up for utility packages
 (use-package ligature
-  :straight t
   :demand t
   :config
   ;; Enable the "www" ligature in every possible major mode
@@ -201,13 +198,12 @@
 
 ;; Rainbow-delimiters
 (use-package rainbow-delimiters
-  :straight t
   :demand t
   :hook (prog-mode . rainbow-delimiters-mode))
 
 ;; Which-key
 (use-package which-key
-  :straight t
+  :straight (:type built-in)
   :demand t
   :config
   (which-key-setup-side-window-right-bottom)
@@ -215,7 +211,6 @@
 
 ;; Helm
 (use-package helm
-  :straight t
   :custom
   (helm-apropos-fuzzy-match t)
   (helm-autoresize-mode t)
@@ -290,7 +285,6 @@
   :custom
   (flycheck-idle-change-delay 1)
   (flycheck-error-list-minimum-level 'warning)
-  :init (global-flycheck-mode)
   :hook (after-init . global-flycheck-mode))
 
 ;; Org mode
@@ -390,7 +384,6 @@
 
 ;; Markdown mode
 (use-package markdown-mode
-  :straight t
   :ensure t
   :custom
   (markdown-enable-wiki-links t)
@@ -399,23 +392,19 @@
 
 ;; Fish shell
 (use-package fish-mode
-  :straight t
   :custom
   (fish-enable-auto-indent t))
 
 ;; PHP
 (use-package php-mode
-  :straight t
   :defer t
   :custom
   (php-mode-coding-style 'psr2)
   :mode ("\\.php\\'"))
 (use-package company-php
-  :straight t
   :defer t
   :after (php-mode company))
 (use-package ac-php
-  :straight t
   :defer t
   :after (php-mode company))
 (with-eval-after-load 'php-mode
