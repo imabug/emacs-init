@@ -15,6 +15,10 @@
 (setopt custom-file (locate-user-emacs-file "custom.el"))
 (load custom-file :no-error-if-file-is-missing)
 
+;; Set frame transparency
+(set-frame-parameter nil 'alpha-background 85)
+(add-to-list 'default-frame-alist '(alpha-background . 85))
+
 ;; Start emacs frame maximized
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
 
