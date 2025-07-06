@@ -83,12 +83,12 @@
 (savehist-mode)
 
 ;; Mouse button bindings
-(global-set-key [mouse-2] 'mark-whole-buffer)    ; wheel button
-(global-set-key [mouse-6] 'backward-word)        ; thumb wheel up
-(global-set-key [mouse-7] 'forward-word)         ; thumb wheel down
-(global-set-key [mouse-8] 'scroll-up-command)    ; forward thumb button
-(global-set-key [mouse-9] 'scroll-down-command)  ; back thumb button
-(global-set-key [mouse-10] 'list-buffers)
+(keymap-global-set "<mouse-2>" 'mark-whole-buffer)    ; wheel button
+(keymap-global-set "<mouse-6>" 'backward-word)        ; thumb wheel up
+(keymap-global-set "<mouse-7>" 'forward-word)         ; thumb wheel down
+(keymap-global-set "<mouse-8>" 'scroll-up-command)    ; forward thumb button
+(keymap-global-set "<mouse-9>" 'scroll-down-command)  ; back thumb button
+(keymap-global-set "<mouse-10>" 'list-buffers)
 
 ;; Bootstrap code for straight.el
 (defvar bootstrap-version)
