@@ -314,9 +314,8 @@
                             entry (file+headline "todo.org" "Calendar")
                             "** APPT %^{Description} %^g\n %?\n Added: %U")
                            ("j" "Journal entry"
-                            plain (function org-journal-find-location)
-                            "** %(format-time-string org-journal-time-format)%^{Title}\n%i%?"
-                            :jump-to-captured t :immediate-finish t)
+                            entry (file+olp+datetree "~/org/journal/journal.org")
+                            "* %?\nEntered on %U\n %i\n %a")
                            ("n" "Notes"
                             entry (file+olp+datetree "notes.org")
                             "* %^{Description} %^g %?\n Added: %U")
@@ -326,6 +325,15 @@
                            ("l" "Lab book"
                             entry (file+olp+datetree "PhD/notes.org")
                             "* %U\n %?\n %i\n %a"))))
+
+;; Org journal
+(use-package org-journal
+  :init
+  (setq org-journal-prefix-key "C-c j")
+  :custom
+  (setq org-journal-dir "~/org/journal/"
+        org-journal-enable-agenda-integration t
+        org-journal-file-type 'year))
 
 ;; Programming modes
 ;; tree-sitter
