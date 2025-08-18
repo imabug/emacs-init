@@ -6,7 +6,7 @@
  ;; If there is more than one, they won't work right.
  '(company-show-quick-access t nil nil "Customized with use-package company")
  '(org-agenda-files
-   '("/home/eugenem/org/todo.org" "/home/eugenem/org/journal/20250705") nil nil "Customized with use-package org")
+   '("/home/eugenem/org/todo.org") nil nil "Customized with use-package org")
  '(spice-output-local "Gnucap")
  '(spice-simulator "Gnucap")
  '(spice-waveform-viewer "Gwave"))
