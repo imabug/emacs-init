@@ -7,8 +7,9 @@
 (add-to-list 'custom-theme-load-path "~/.config/emacs/themes")
 
 ;; Set a theme
-(load-theme 'timu-macos t)
-;; (setq tron-legacy-theme-vivid-cursor t)
+;;(load-theme 'timu-macos t)
+(load-theme 'tron-legacy t)
+(setq tron-legacy-theme-vivid-cursor t)
 
 ;; Put custom configurations added via M-x customize
 ;; into its own file
