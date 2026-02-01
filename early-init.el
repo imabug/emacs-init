@@ -1,6 +1,9 @@
 ;;; early-init.el --- -*- lexical-binding:t -*-
 
 ;;; Code:
+;; Don't enable package.el
+(setq package-enable-at-startup nil)
+
 ;; Path settings
 (add-to-list 'load-path "~/.config/emacs/elisp")
 (add-to-list 'load-path "/usr/share/emacs/site-lisp")
@@ -27,9 +30,6 @@
 (setopt visible-bell t)                           ; Enable visible bell
 (tool-bar-mode -1)                              ; Don't show the tool bar
 (menu-bar-mode -1)                              ; Don't show the menu bar
-
-;; Don't enable package.el
-(setopt package-enable-at-startup nil)
 
 ;; Don't ask if emacs should follow symlinks
 (setopt vc-follow-symlinks t)
