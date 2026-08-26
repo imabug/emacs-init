@@ -38,6 +38,17 @@
 (prefer-coding-system 'utf-8)
 (add-hook 'text-mode-hook 'turn-on-visual-line-mode)
 (add-hook 'text-mode-hook 'auto-fill-mode)
+;; This ensures that pressing Enter will insert a new line and indent it.
+(global-set-key (kbd "RET") #'newline-and-indent)
+
+;; Indentation based on the indentation of the previous non-blank line.
+(setq-default indent-line-function #'indent-relative-first-indent-point)
+
+;; In modes such as `text-mode', pressing Enter multiple times removes
+;; the indentation. The following fixes the issue and ensures that text
+;; is properly indented using `indent-relative' or
+;; `indent-relative-first-indent-point'.
+(setq-default indent-line-ignored-functions '())
 
 ;; Fonts
 (defvar em/default-font-size 110)
@@ -393,10 +404,16 @@
 ;; Markdown mode
 (use-package markdown-mode
   :ensure t
+  :defer t
+  :commands (gfm-mode gfm-view-mode markdown-mode markdown-view-mode)
+  :mode (("\\.markdown\\'" . markdown-mode)
+         ("\\.md\\'" . markdown-mode)
+         ("README\\.md\\'" . gfm-mode))
   :custom
   (markdown-enable-wiki-links t)
   (markdown-enable-math t)
-  (markdown-command "multimarkdown"))
+  (markdown-command "multimarkdown")
+)
 
 ;; Fish shell
 (use-package fish-mode
